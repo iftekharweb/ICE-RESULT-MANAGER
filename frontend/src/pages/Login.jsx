@@ -1,7 +1,64 @@
-import React from "react";
-import LOGIN_COVER from '../assets/Shabash_Bangladesh.jpg'
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import LOGIN_COVER from "../assets/Shabash_Bangladesh.jpg";
+import axios from "axios";
+
+import { useStateContext } from "../contexts/ContextProvider";
 
 const Login = () => {
+
+  const {setAuthToken} = useStateContext();
+
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const decodeToken = (token) => {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((char) => "%" + ("00" + char.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+    return JSON.parse(jsonPayload);
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const user = decodeToken(token);
+      if (user) {
+        navigate("/");
+      }
+    }
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(email + " " + password);
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASEURL}/login/`,
+        { email, password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = res.data;
+      if (!data.errors) {
+        localStorage.setItem("token", data.token.access);
+        setAuthToken(data.token.access);
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <div>
       <section className="relative flex flex-wrap lg:h-screen lg:items-center">
@@ -12,11 +69,17 @@ const Login = () => {
             </h1>
 
             <p className="mt-4 text-gray-500">
-              Welcome to the result management System of department of Information and Communication Engineering of University of Rajshahi.
+              Welcome to the result management System of department of
+              Information and Communication Engineering of University of
+              Rajshahi.
             </p>
           </div>
 
-          <form action="#" className="mx-auto mb-0 mt-8 max-w-md space-y-4">
+          <form
+            action="#"
+            className="mx-auto mb-0 mt-8 max-w-md space-y-4"
+            onSubmit={handleSubmit}
+          >
             <div>
               <label htmlFor="email" className="sr-only">
                 Email
@@ -27,6 +90,8 @@ const Login = () => {
                   type="email"
                   className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                   placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => setEmail(() => e.target.value)}
                 />
 
                 <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
@@ -58,6 +123,8 @@ const Login = () => {
                   type="password"
                   className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                   placeholder="Enter password"
+                  value={password}
+                  onChange={(e) => setPassword(() => e.target.value)}
                 />
 
                 <span className="absolute inset-y-0 end-0 grid place-content-center px-4">

@@ -6,10 +6,10 @@ const StateContext = createContext();
 export const ContextProvider = ({ children }) => {
   const [activeMenu, setActiveMenu] = useState(true);
   const [authToken, setAuthToken] = useState("");
-  const [authUsername, setAuthUsername] = useState("");
   const [authUserId, setAuthUserId] = useState(null);
   const [authEmail, setAuthEmail] = useState("");
-  const [authRole, setAuthRole] = useState(null);
+  const [authRole, setAuthRole] = useState("");
+  const [authName, setAuthName] = useState("");
 
   const decodeToken = (token) => {
     const base64Url = token.split(".")[1];
@@ -23,7 +23,6 @@ export const ContextProvider = ({ children }) => {
     return JSON.parse(jsonPayload);
   };
 
-
   const handleLogOut = () => {
     localStorage.removeItem("token");
     setAuthToken("");
@@ -33,7 +32,6 @@ export const ContextProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     if (token) {
       const user = decodeToken(token);
-      setAuthUserId(user);
       if (user) {
         setAuthToken(token);
         setAuthUserId(user.user_id);
@@ -45,32 +43,48 @@ export const ContextProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_BASEURL}/profile/`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-      if(response.data) {
-        const data = response.data[0];
-        setAuthUsername(data.username);
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASEURL}/profile/`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+      if (response.data) {
+        const data = response.data;
         setAuthEmail(data.email);
+        setAuthName(data.name);
         setAuthRole(data.role);
-        if(data.role === 4) {
+        console.log(data);
+        if (data.role === "") {
           setAuthToken("");
         }
       }
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchUser();
-  },[authToken])
+  }, [authToken]);
 
   return (
     <StateContext.Provider
-      value={{ activeMenu, setActiveMenu, authToken, setAuthToken,handleLogOut, authUserId, setAuthUserId, authRole}}
+      value={{
+        activeMenu,
+        setActiveMenu,
+        authToken,
+        setAuthToken,
+        handleLogOut,
+        authUserId,
+        setAuthUserId,
+        authRole,
+        authEmail,
+        authName,
+        setAuthEmail
+      }}
     >
       {children}
     </StateContext.Provider>
