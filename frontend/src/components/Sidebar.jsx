@@ -5,8 +5,8 @@ import { FaBookOpenReader } from "react-icons/fa6";
 import { IoPersonAdd } from "react-icons/io5";
 import { ImProfile } from "react-icons/im";
 import { IoMdContacts } from "react-icons/io";
-import { FaHandsWash } from "react-icons/fa";
-import { FiLogOut } from "react-icons/fi";
+import { PiStudentBold } from "react-icons/pi";
+import { FaChalkboardTeacher } from "react-icons/fa";
 
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -36,6 +36,16 @@ const links = [
         icon: <IoMdContacts />,
       },
       {
+        name: "students",
+        role: ["System Admin", "Student", "Teacher"],
+        icon: <PiStudentBold />,
+      },
+      {
+        name: "teachers",
+        role: ["System Admin", "Student", "Teacher"],
+        icon: <FaChalkboardTeacher />,
+      },
+      {
         name: "create",
         role: ["System Admin", "Student", "Teacher"],
         icon: <IoPersonAdd />,
@@ -59,10 +69,6 @@ const Sidebar = () => {
     if (activeMenu !== undefined) {
       //setActiveMenu(false);
     }
-  };
-  const logoutclicked = () => {
-    handleLogOut();
-    navigate("/");
   };
   const activeLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-white  text-md m-2";
@@ -118,16 +124,6 @@ const Sidebar = () => {
                   )}
                 </div>
               ))}
-            </div>
-            <div>
-              <button
-                onClick={logoutclicked}
-                style={{ color: "#FA7070" }}
-                className="flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 m-2 hover:font-bold"
-              >
-                <FiLogOut />
-                <span className="capitalize">Log Out</span>
-              </button>
             </div>
           </div>
         </>

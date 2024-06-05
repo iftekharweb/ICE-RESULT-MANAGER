@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 
 import { Navbar, Footer, Sidebar } from "./components";
-import { Login , Dashboard} from "./pages";
+import { Login , Dashboard, Students, Teachers, Profile, Users} from "./pages";
 import "./App.css";
 
 import { useStateContext } from "./contexts/ContextProvider";
@@ -26,18 +26,20 @@ const AuthenticatedRoutes = ({ activeMenu }) => {
             : "bg-main-bg w-full min-h-screen flex-2"
         }
       >
-        <div className="fixed md:static bg-main-bg w-full ">
+        <div className="fixed md:static w-full ">
           <Navbar />
         </div>
-        <div className="w-full h-full flex flex-col justify-between items-center">
-          <div className="w-full">
+        <div className="w-full h-full flex flex-col justify-between items-center shadow-sm">
+          <div className="w-full bg-[#FAFBFB] h-full">
             <Routes>
               {/* dashboard  */}
               <Route path="/" element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              {/* <Route path="/profile" element={<Profile />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/users" element={<Users />} />
-              <Route path="/create" element={<Create />} /> */}
+              <Route path="/students" element={<Students />} />
+              <Route path="/teachers" element={<Teachers />} />
+              {/* <Route path="/create" element={<Create />} /> */}
             </Routes>
           </div>
           <div className="w-full">

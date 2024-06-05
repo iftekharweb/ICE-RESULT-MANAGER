@@ -3,9 +3,9 @@ import React from "react";
 const Footer = () => {
   return (
     <div className="w-full">
-      <footer className="bg-white">
-        <div className="mx-auto max-w-screen-xl px-4 pb-8 pt-16 sm:px-6 lg:px-8 lg:pt-24">
-          <div className="mt-16 border-t border-gray-100 pt-8 sm:flex sm:items-center sm:justify-between lg:mt-24">
+      <footer className="bg-[#FAFBFB]">
+        <div className="mx-auto max-w-screen-xl px-4 pb-8 pt-0 sm:px-6 lg:px-8 lg:pt-0">
+          <div className="mt-2 border-t border-gray-100 pt-2 sm:flex sm:items-center sm:justify-between lg:mt-0">
             <ul className="flex flex-wrap justify-center gap-4 text-xs lg:justify-end">
               <li>
                 <a
