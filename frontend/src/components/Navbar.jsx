@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { useStateContext } from "../contexts/ContextProvider";
+import { FiLogOut } from "react-icons/fi";
 
 const currentColor = "#03C9D7";
 
@@ -22,9 +23,14 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => {
 };
 
 const Navbar = () => {
-  const { activeMenu, setActiveMenu, authName} = useStateContext();
+  const { activeMenu, setActiveMenu, authName , handleLogOut} = useStateContext();
 
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
+
+  const logoutclicked = () => {
+    handleLogOut();
+    navigate("/");
+  };
 
   return (
     <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative">
@@ -42,6 +48,9 @@ const Navbar = () => {
               {authName}
             </span>
           </p>
+          <button className="px-4" onClick={logoutclicked}>
+            <FiLogOut className="font-semibold text-gray-500 hover:text-red-500 hover:font-bold text-xl" />
+          </button>
         </div>
       </div>
     </div>
