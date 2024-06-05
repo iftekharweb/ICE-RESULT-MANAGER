@@ -22,15 +22,15 @@ const AuthenticatedRoutes = ({ activeMenu }) => {
       <div
         className={
           activeMenu
-            ? "bg-main-bg min-h-screen md:ml-72 w-full  "
-            : "bg-main-bg w-full min-h-screen flex-2 "
+            ? "bg-main-bg min-h-screen md:ml-72 w-full"
+            : "bg-main-bg w-full min-h-screen flex-2"
         }
       >
         <div className="fixed md:static bg-main-bg w-full ">
           <Navbar />
         </div>
-        <div className="">
-          <div>
+        <div className="w-full h-full flex flex-col justify-between items-center">
+          <div className="w-full">
             <Routes>
               {/* dashboard  */}
               <Route path="/" element={<Dashboard />} />
@@ -40,7 +40,7 @@ const AuthenticatedRoutes = ({ activeMenu }) => {
               <Route path="/create" element={<Create />} /> */}
             </Routes>
           </div>
-          <div>
+          <div className="w-full">
             <Footer />
           </div>
         </div>
