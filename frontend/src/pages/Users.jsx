@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { IoMdAdd } from "react-icons/io";
+import {SearchIt} from '../components'
 
 const x = [
   {
@@ -369,15 +370,25 @@ const Users = () => {
   return (
     <div className="m-2 md:m-8 mt-24 p-2 md:px-10 md:py-5 bg-white rounded-3xl">
       <div className="flex flex-row justify-between">
+        {/* Header */}
         <div className="pb-3">
           <p className="text-3xl font-semibold">All Users</p>
         </div>
-        <div>
-          <button className="flex justify-center items-center rounded bg-[#03C9D7] px-6 py-2 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-[#03C9D7]">
-            <span className="font-bold pr-2"><IoMdAdd/></span>Add User
-          </button>
+        <div className=" flex justify-center items-center">
+        <div className="mr-1"><SearchIt/></div>
+          <div>
+
+            <button className="flex justify-center items-center rounded bg-[#03C9D7] px-5 py-1 text-md font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-[#03C9D7]">
+              <span className="font-bold pr-2">
+                <IoMdAdd />
+              </span>
+              Add User
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Table */}
       <div className="rounded-lg border border-gray-200">
         <div className="overflow-x-auto rounded-t-lg">
           <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
