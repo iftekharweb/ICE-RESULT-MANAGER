@@ -23,6 +23,15 @@ class Teacher(models.Model):
     phone_number = models.CharField(max_length=255, null=True, blank=True)
     birthdate = models.DateField()
 
+    rank = models.CharField(max_length=255, default="Lecturer")
+
+    GENDER_CHOICE = [
+        ("Male", "Male"),
+        ("Female", "Female"),
+        ("Other", "Other")
+    ]
+    gender = models.CharField(max_length=255, choices=GENDER_CHOICE, null=True, blank=True)
+
     def __str__(self) -> str:
         return f'{self.user.name}'
 
