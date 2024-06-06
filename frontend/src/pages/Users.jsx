@@ -374,7 +374,7 @@ const Users = () => {
         <div className="pb-3">
           <p className="text-3xl font-semibold">All Users</p>
         </div>
-        <div className=" flex justify-center items-center">
+        <div className=" flex justify-center items-center pb-3">
         <div className="mr-1"><SearchIt/></div>
           <div>
 
