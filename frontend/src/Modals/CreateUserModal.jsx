@@ -4,7 +4,7 @@ import { MdOutlineCancel } from "react-icons/md";
 import { FaCircleArrowRight } from "react-icons/fa6";
 import CreateTeacherModal from "./CreateTeacherModal";
 
-const CreateStudentModal = ({ handleAdd }) => {
+const CreateUserModal = ({ handleAdd }) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
@@ -16,8 +16,6 @@ const CreateStudentModal = ({ handleAdd }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setAddTeacher(!addTeacher);
-    return;
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASEURL}/register/`,
@@ -29,7 +27,10 @@ const CreateStudentModal = ({ handleAdd }) => {
         }
       );
       if (res.data) {
-        setUser(res.data.id);
+        setUser(res.data.user_id);
+        if(role === "Student") setAddStudent(!addStudent);
+        else if( role === "Teacher") setAddTeacher(!addTeacher);
+        else handleAdd();
       } else {
         console.log("Error Man!");
       }
@@ -55,9 +56,9 @@ const CreateStudentModal = ({ handleAdd }) => {
                 </div>
               </div>
               <div>
-                <form action="#" onSubmit={handleSubmit}>
+                <form action="submit" onSubmit={handleSubmit}>
                   <label
-                    htmlFor="Full Name"
+                    htmlFor="full name"
                     className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-[#03C9D7] focus-within:ring-1 focus-within:ring-[#03C9D7] mb-5"
                   >
                     <input
@@ -65,6 +66,8 @@ const CreateStudentModal = ({ handleAdd }) => {
                       id="full name"
                       className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full py-2 px-2"
                       placeholder="Full Name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                     />
 
                     <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -72,7 +75,7 @@ const CreateStudentModal = ({ handleAdd }) => {
                     </span>
                   </label>
                   <label
-                    htmlFor="Full Name"
+                    htmlFor="email"
                     className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-[#03C9D7] focus-within:ring-1 focus-within:ring-[#03C9D7] mb-5"
                   >
                     <input
@@ -80,6 +83,8 @@ const CreateStudentModal = ({ handleAdd }) => {
                       id="email"
                       className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full py-2 px-2"
                       placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
 
                     <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -87,9 +92,11 @@ const CreateStudentModal = ({ handleAdd }) => {
                     </span>
                   </label>
                   <select
-                    name="HeadlineAct"
-                    id="HeadlineAct"
+                    name="role"
+                    id="role"
                     className="mt-1.5 w-full rounded-lg border border-gray-200 text-gray-700 sm:text-sm focus-within:border-[#03C9D7] focus-within:ring-1 focus-within:ring-[#03C9D7] py-2 mb-5 px-2"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
                   >
                     <option value="">Select Role</option>
                     <option value="System Admin">System Admin</option>
@@ -97,7 +104,7 @@ const CreateStudentModal = ({ handleAdd }) => {
                     <option value="Teacher">Teacher</option>
                   </select>
                   <label
-                    htmlFor="Full Name"
+                    htmlFor="password"
                     className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-[#03C9D7] focus-within:ring-1 focus-within:ring-[#03C9D7] mb-5"
                   >
                     <input
@@ -105,6 +112,8 @@ const CreateStudentModal = ({ handleAdd }) => {
                       id="password"
                       className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full py-2 px-2"
                       placeholder="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
 
                     <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -129,9 +138,9 @@ const CreateStudentModal = ({ handleAdd }) => {
         </div>
       )}
       {addStudent && <CreateStudentModal handleAdd={handleAdd} />}
-      {addTeacher && <CreateTeacherModal handleAdd={handleAdd} user={user}/>}
+      {addTeacher && <CreateTeacherModal handleAdd={handleAdd} user={user} />}
     </>
   );
 };
 
-export default CreateStudentModal;
+export default CreateUserModal;

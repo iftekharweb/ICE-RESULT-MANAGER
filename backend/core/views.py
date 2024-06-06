@@ -26,7 +26,8 @@ class UserRegistrationView(APIView):
         return Response(
             {
                 'token':token,
-                'msg':'Registration Successful !'
+                'msg':'Registration Successful !',
+                'user_id': user.id,
             }, 
             status=status.HTTP_201_CREATED
         ) 

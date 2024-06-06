@@ -20,10 +20,23 @@ class TeacherWithAssignedCourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Teacher
-        fields = ['user','department', 'id', 'blood_group', 'university', 'phone_number', 'assigned_sections', 'birthdate']
+        fields = ['user','department', 'id', 'blood_group', 'university', 'phone_number', 'assigned_sections', 'birthdate', 'rank']
     
     def get_assigned_sections(self, obj):
         sections = Section.objects.filter(teacher=obj)
         serializer = SectionSerializer(sections, many=True)
         return serializer.data
+    
+
+class TeacherCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Teacher
+        fields = [
+            'user', 'department', 
+            'id', 'blood_group', 
+            'phone_number', 'gender', 'rank', 'birthdate'
+        ]
+
+    def create(self, validated_data):
+        return Teacher.objects.create(**validated_data)
   

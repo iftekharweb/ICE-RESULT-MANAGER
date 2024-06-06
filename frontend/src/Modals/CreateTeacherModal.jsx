@@ -16,7 +16,7 @@ const CreateTeacherModal = ({ handleAdd, user }) => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BASEURL}/register/`,
+        `${import.meta.env.VITE_BASEURL}/teacher/details/`,
         {
           id,
           user,
@@ -34,7 +34,7 @@ const CreateTeacherModal = ({ handleAdd, user }) => {
         }
       );
       if (res.data) {
-        console.log("Success!");
+        handleAdd();
       } else {
         console.log("Error!");
       }
