@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { IoMdAdd } from "react-icons/io";
 import {SearchIt} from '../components'
+import CreateUserModal from "../Modals/CreateUserModal";
 
 const x = [
   {
@@ -341,6 +342,11 @@ const Users = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 12;
 
+  const [adding, setAdding] = useState(false);
+  const handleAdd = () => {
+    setAdding(!adding);
+  }
+
   const fetchUsers = async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_BASEURL}/users`);
@@ -369,16 +375,17 @@ const Users = () => {
 
   return (
     <div className="m-2 md:m-8 mt-24 p-2 md:px-10 md:py-5 bg-white rounded-3xl">
+      {adding && <CreateUserModal handleAdd={handleAdd}/>}
       <div className="flex flex-row justify-between">
         {/* Header */}
         <div className="pb-3">
           <p className="text-3xl font-semibold">All Users</p>
         </div>
         <div className=" flex justify-center items-center pb-3">
-        <div className="mr-1"><SearchIt/></div>
+        {!adding && <div className="mr-1"><SearchIt/></div>}
           <div>
 
-            <button className="flex justify-center items-center rounded bg-[#03C9D7] px-5 py-1 text-md font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-[#03C9D7]">
+            <button className="flex justify-center items-center rounded bg-[#03C9D7] px-5 py-1 text-md font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-[#03C9D7]" onClick={handleAdd}>
               <span className="font-bold pr-2">
                 <IoMdAdd />
               </span>
