@@ -22,7 +22,7 @@ class StudentCreateSerializer(serializers.ModelSerializer):
         fields = [
             'user', 'hall', 'department', 'semester', 
             'id', 'reg', 'blood_group', 'university', 
-            'phone_number', 'session'
+            'phone_number', 'session', 'birthdate', 'gender'
         ]
 
     def create(self, validated_data):

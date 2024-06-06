@@ -3,6 +3,7 @@ import axios from "axios";
 import { MdOutlineCancel } from "react-icons/md";
 import { FaCircleArrowRight } from "react-icons/fa6";
 import CreateTeacherModal from "./CreateTeacherModal";
+import CreateStudentModal from "./CreateStudentModal";
 
 const CreateUserModal = ({ handleAdd }) => {
   const [email, setEmail] = useState("");
@@ -137,7 +138,7 @@ const CreateUserModal = ({ handleAdd }) => {
           </div>
         </div>
       )}
-      {addStudent && <CreateStudentModal handleAdd={handleAdd} />}
+      {addStudent && <CreateStudentModal handleAdd={handleAdd} user={user}/>}
       {addTeacher && <CreateTeacherModal handleAdd={handleAdd} user={user} />}
     </>
   );

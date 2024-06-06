@@ -1,9 +1,10 @@
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from . import serializers, renderers
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
+from .models import User
 
 # Create your views here.
 # M A N U A L L Y   G E N E R A T E   T O K E N
@@ -60,4 +61,8 @@ class UserProfileView(APIView):
     def get(self, request, format=None):
         serializer = serializers.UserProfileSerializer(request.user) 
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class UserView(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = serializers.UserProfileSerializer
             
