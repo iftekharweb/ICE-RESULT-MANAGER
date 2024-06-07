@@ -5,6 +5,7 @@ import { IoNotificationsOff } from "react-icons/io5";
 
 import { useStateContext } from "../contexts/ContextProvider";
 import CreateNoticeModal from "../Modals/CreateNoticeModal";
+import ProcessStudentModal from "../Modals/ProcessStudentModal";
 
 const DateTimeDisplay = ({ dateTimeString }) => {
   const dateObj = new Date(dateTimeString);
@@ -26,6 +27,19 @@ const FormFillUp = () => {
   const handleAdd = () => {
     setAdding(!adding);
   };
+
+  const [processing, setProcessing] = useState(false);
+  const handleProcess = () => {
+    setProcessing(!processing);
+  };
+
+  const [semester_id, setSemester_id] = useState(null);
+  const [form_id, setForm_id] = useState(null);
+
+  const handleChange = (x, y) => {
+    setSemester_id(x);
+    setForm_id(y);
+  }
 
   const fetchForms = async () => {
     try {
@@ -56,6 +70,7 @@ const FormFillUp = () => {
   return (
     <div className="m-2 md:m-8 mt-24 p-2 md:px-10 md:py-5 bg-white rounded-3xl h-[90%]">
       {adding && <CreateNoticeModal handleAdd={handleAdd} />}
+      {processing && <ProcessStudentModal handleProcess={handleProcess} semester_id={semester_id} form_id={form_id}/>}
       <div className="flex justify-between items-center">
         <div>
           <p className="text-3xl font-semibold">All Notices</p>
@@ -105,7 +120,13 @@ const FormFillUp = () => {
                           </strong>
                           {authRole === "System Admin" &&
                             new Date() < new Date(notice.start_time) && (
-                              <button className="rounded border border-[#03C9D7] hover:bg-[#03C9D7] px-3 py-1.5 text-[10px] font-medium hover:text-white mr-2">
+                              <button
+                                className="rounded border border-[#03C9D7] hover:bg-[#03C9D7] px-3 py-1.5 text-[10px] font-medium hover:text-white mr-2"
+                                onClick={() => {
+                                  handleProcess();
+                                  handleChange(notice.semester, notice.id);
+                                }}
+                              >
                                 Pre-process Students
                               </button>
                             )}

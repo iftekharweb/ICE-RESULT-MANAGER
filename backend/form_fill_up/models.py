@@ -34,3 +34,9 @@ class FormFillUpInformation(models.Model):
     is_allowed = models.BooleanField(default=False, blank=True)
     is_formed = models.BooleanField(default=False, blank=True)
     is_added = models.BooleanField(default=False, blank=True)
+
+    class Meta:
+        unique_together = ('form_id', 'student', 'section')
+
+    def __str__(self):
+        return f"{self.form_id} - {self.student} - {self.section}"
