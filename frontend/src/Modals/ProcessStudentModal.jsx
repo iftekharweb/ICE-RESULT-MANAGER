@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { MdOutlineCancel } from "react-icons/md";
+
 import { SiTicktick } from "react-icons/si";
 import { useStateContext } from "../contexts/ContextProvider";
 import LOADER from "../assets/Infinity.svg";
@@ -34,7 +34,6 @@ const ProcessStudentModal = ({ handleProcess, semester_id, form_id }) => {
         const curr = res.data.filter(
           (section) => section.course.semester.id === semester_id
         );
-        //console.log("CURR",res.data);
         setSections(curr);
       }
     } catch (error) {
@@ -43,8 +42,6 @@ const ProcessStudentModal = ({ handleProcess, semester_id, form_id }) => {
   };
 
   const addStudent = async (student, section) => {
-    console.log(student);
-    console.log(section);
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASEURL}/form-fill-up-information/`,
@@ -66,15 +63,13 @@ const ProcessStudentModal = ({ handleProcess, semester_id, form_id }) => {
   }, []);
 
   useEffect(() => {
-    console.log("STU",students);
-    console.log("SEC",sections);
     students.forEach((student) => {
       sections.forEach((section) => {
         addStudent(student, section);
       });
     });
     setIsLoading(!isLoading);
-  },[students, sections])
+  }, [students, sections]);
 
   useEffect(() => {
     if (!isLoading) {
