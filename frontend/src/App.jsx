@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 
 import { Navbar, Footer, Sidebar } from "./components";
-import { Login , Dashboard, Students, Teachers, Profile, Users} from "./pages";
+import { Login , Dashboard, Students, Teachers, Profile, Users, FormFillUp} from "./pages";
 import "./App.css";
 
 import { useStateContext } from "./contexts/ContextProvider";
@@ -39,7 +39,7 @@ const AuthenticatedRoutes = ({ activeMenu }) => {
               <Route path="/users" element={<Users />} />
               <Route path="/students" element={<Students />} />
               <Route path="/teachers" element={<Teachers />} />
-              {/* <Route path="/create" element={<Create />} /> */}
+              <Route path="/form-fill-up" element={<FormFillUp />} />
             </Routes>
           </div>
           <div className="w-full">
