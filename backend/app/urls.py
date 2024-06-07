@@ -9,4 +9,5 @@ urlpatterns = [
     path('', include('teachers.urls')),
     path('', include('courses.urls')),
     path('', include('core.urls')),
+    path('', include('form_fill_up.urls')),
 ]

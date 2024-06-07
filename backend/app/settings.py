@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'students',
     'teachers',
     'courses',
+    'form_fill_up',
 ]
 
 MIDDLEWARE = [
