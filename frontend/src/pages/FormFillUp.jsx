@@ -4,6 +4,7 @@ import { IoMdAdd } from "react-icons/io";
 import { IoNotificationsOff } from "react-icons/io5";
 
 import { useStateContext } from "../contexts/ContextProvider";
+import CreateNoticeModal from "../Modals/CreateNoticeModal";
 
 const DateTimeDisplay = ({ dateTimeString }) => {
   const dateObj = new Date(dateTimeString);
@@ -20,6 +21,11 @@ const FormFillUp = () => {
   const { authToken, authRole } = useStateContext();
   const [notices, setNotices] = useState([]);
   const [cnt, setCnt] = useState(0);
+
+  const [adding, setAdding] = useState(false);
+  const handleAdd = () => {
+    setAdding(!adding);
+  };
 
   const fetchForms = async () => {
     try {
@@ -49,13 +55,17 @@ const FormFillUp = () => {
 
   return (
     <div className="m-2 md:m-8 mt-24 p-2 md:px-10 md:py-5 bg-white rounded-3xl h-[90%]">
+      {adding && <CreateNoticeModal handleAdd={handleAdd} />}
       <div className="flex justify-between items-center">
         <div>
           <p className="text-3xl font-semibold">All Notices</p>
         </div>
         <div className="px-1">
           {authRole === "System Admin" && (
-            <button className="flex justify-center items-center rounded bg-[#03C9D7] px-5 py-1 text-md font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-[#03C9D7]">
+            <button
+              className="flex justify-center items-center rounded bg-[#03C9D7] px-5 py-1 text-md font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-[#03C9D7]"
+              onClick={handleAdd}
+            >
               <span className="font-bold pr-2">
                 <IoMdAdd />
               </span>
@@ -87,11 +97,19 @@ const FormFillUp = () => {
                       </div>
                     </div>
 
-                    <div>
+                    <div className="w-full">
                       <div className="flex justify-between items-start">
-                        <strong className="rounded border border-[#03C9D7] bg-[#03C9D7] px-3 py-1.5 text-[10px] font-medium text-white mr-2">
-                          Notice ID #{notice.id}
-                        </strong>
+                        <div>
+                          <strong className="rounded border border-[#03C9D7] bg-[#03C9D7] px-3 py-1.5 text-[10px] font-medium text-white mr-2">
+                            Notice ID #{notice.id}
+                          </strong>
+                          {authRole === "System Admin" &&
+                            new Date() < new Date(notice.start_time) && (
+                              <button className="rounded border border-[#03C9D7] hover:bg-[#03C9D7] px-3 py-1.5 text-[10px] font-medium hover:text-white mr-2">
+                                Pre-process Students
+                              </button>
+                            )}
+                        </div>
                         <div>
                           {authRole === "Student" &&
                             new Date() >= new Date(notice.start_time) &&
