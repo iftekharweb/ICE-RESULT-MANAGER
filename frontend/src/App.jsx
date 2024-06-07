@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 
 import { Navbar, Footer, Sidebar } from "./components";
-import { Login , Dashboard, Students, Teachers, Profile, Users, FormFillUp} from "./pages";
+import { Login , Dashboard, Students, Teachers, Profile, Users, FormFillUp, Preprocess} from "./pages";
 import "./App.css";
 
 import { useStateContext } from "./contexts/ContextProvider";
@@ -40,6 +40,7 @@ const AuthenticatedRoutes = ({ activeMenu }) => {
               <Route path="/students" element={<Students />} />
               <Route path="/teachers" element={<Teachers />} />
               <Route path="/form-fill-up" element={<FormFillUp />} />
+              <Route path="/pre-process" element={<Preprocess />} />
             </Routes>
           </div>
           <div className="w-full">

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { IoMdAdd } from "react-icons/io";
+import { IoNotificationsOff } from "react-icons/io5";
 
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -16,15 +18,8 @@ const DateTimeDisplay = ({ dateTimeString }) => {
 
 const FormFillUp = () => {
   const { authToken, authRole } = useStateContext();
-
-  const [id, setId] = useState(null);
-  const [semester, setSemester] = useState(null);
-  const [start_time, setStart_time] = useState("");
-  const [end_time, setEnd_time] = useState("");
-  const [description, setDescription] = useState("");
-  const [is_expired, setIs_expired] = useState(undefined);
-
   const [notices, setNotices] = useState([]);
+  const [cnt, setCnt] = useState(0);
 
   const fetchForms = async () => {
     try {
@@ -49,10 +44,26 @@ const FormFillUp = () => {
 
   useEffect(() => {
     fetchForms();
+    notices.map((x) => !x.is_expired && setCnt(cnt + 1));
   }, []);
 
   return (
     <div className="m-2 md:m-8 mt-24 p-2 md:px-10 md:py-5 bg-white rounded-3xl h-[90%]">
+      <div className="flex justify-between items-center">
+        <div>
+          <p className="text-3xl font-semibold">All Notices</p>
+        </div>
+        <div className="px-1">
+          {authRole === "System Admin" && (
+            <button className="flex justify-center items-center rounded bg-[#03C9D7] px-5 py-1 text-md font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-[#03C9D7]">
+              <span className="font-bold pr-2">
+                <IoMdAdd />
+              </span>
+              Add Notice
+            </button>
+          )}
+        </div>
+      </div>
       <div>
         {notices.map(
           (notice) =>
@@ -82,12 +93,19 @@ const FormFillUp = () => {
                           Notice ID #{notice.id}
                         </strong>
                         <div>
-                        { authRole === "Student" && <button className="rounded border border-[#03C9D7]  hover:bg-[#03C9D7] px-3 py-1.5 text-[10px] font-medium hover:text-white mr-2">
-                          Form Fill Up
-                        </button>}
-                        {authRole === "Teacher" && <button className="rounded border border-[#03C9D7]  hover:bg-[#03C9D7] px-3 py-1.5 text-[10px] font-medium hover:text-white mr-2">
-                          Add Attendence 
-                        </button>}
+                          {authRole === "Student" &&
+                            new Date() >= new Date(notice.start_time) &&
+                            new Date() <= new Date(notice.end_time) && (
+                              <button className="rounded border border-[#03C9D7] hover:bg-[#03C9D7] px-3 py-1.5 text-[10px] font-medium hover:text-white mr-2">
+                                Form Fill Up
+                              </button>
+                            )}
+                          {authRole === "Teacher" &&
+                            new Date() < new Date(notice.start_time) && (
+                              <button className="rounded border border-[#03C9D7] hover:bg-[#03C9D7] px-3 py-1.5 text-[10px] font-medium hover:text-white mr-2">
+                                Add Attendance
+                              </button>
+                            )}
                         </div>
                       </div>
 
@@ -155,6 +173,18 @@ const FormFillUp = () => {
                 </article>
               </>
             )
+        )}
+        {cnt === 0 && (
+          <div className="w-full h-full flex justify-center items-center py-40">
+            <div className="flex-col justify-center items-center">
+              <div className="flex justify-center items-center">
+                <IoNotificationsOff className="text-8xl text-[#03C9D7]" />
+              </div>
+              <p className="font-semibold text-xl text-gray-400">
+                There is no notices for now
+              </p>
+            </div>
+          </div>
         )}
       </div>
     </div>

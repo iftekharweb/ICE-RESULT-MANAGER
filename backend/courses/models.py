@@ -25,6 +25,7 @@ class Course(models.Model):
 
 
 class Section(models.Model):
+    id = models.BigIntegerField(primary_key=True)
     course = models.ForeignKey(Course, models.CASCADE)
 
     SECTION_CHOICE = [

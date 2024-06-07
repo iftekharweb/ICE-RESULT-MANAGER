@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from semesters.models import Semester 
-
+from students.models import Student
+from courses.models import Section
 class FormFillUp(models.Model):
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     title = models.CharField(max_length=255, null=True, blank=True)
@@ -24,3 +25,12 @@ class FormFillUp(models.Model):
         if self.is_expired():
             self.delete()
 
+
+class FormFillUpInformation(models.Model):
+    form_id = models.ForeignKey(FormFillUp, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+
+    is_allowed = models.BooleanField(default=False, blank=True)
+    is_formed = models.BooleanField(default=False, blank=True)
+    is_added = models.BooleanField(default=False, blank=True)
