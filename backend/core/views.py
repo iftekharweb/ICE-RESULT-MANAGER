@@ -1,10 +1,14 @@
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
+from rest_framework.generics import RetrieveAPIView
 from . import serializers, renderers
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
+from django.shortcuts import get_object_or_404
 from .models import User
+from students.models import Student
+from teachers.models import Teacher
 
 # Create your views here.
 # M A N U A L L Y   G E N E R A T E   T O K E N
@@ -65,4 +69,19 @@ class UserProfileView(APIView):
 class UserView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.UserProfileSerializer
-            
+
+
+class StudentTeacherIdView(RetrieveAPIView):
+    serializer_class = serializers.StudentTeacherIdSerializer
+    renderer_classes = [renderers.UserRenderer]
+
+    def get_object(self):
+        user_id = self.kwargs.get('user_id')
+        teacher = get_object_or_404(Teacher, user_id=user_id)
+        if teacher:
+            self.serializer_class.Meta.model = Teacher
+            return teacher
+        student = get_object_or_404(Student, user_id=user_id)
+        if student:
+            self.serializer_class.Meta.model = Student
+            return student

@@ -10,6 +10,7 @@ export const ContextProvider = ({ children }) => {
   const [authEmail, setAuthEmail] = useState("");
   const [authRole, setAuthRole] = useState("");
   const [authName, setAuthName] = useState("");
+  const [authId, setAuthId] = useState(null);
 
   const decodeToken = (token) => {
     const base64Url = token.split(".")[1];
@@ -56,7 +57,7 @@ export const ContextProvider = ({ children }) => {
         setAuthEmail(data.email);
         setAuthName(data.name);
         setAuthRole(data.role);
-        console.log(data);
+        setAuthId(data.id);
         if (data.role === "") {
           setAuthToken("");
         }
@@ -79,11 +80,10 @@ export const ContextProvider = ({ children }) => {
         setAuthToken,
         handleLogOut,
         authUserId,
-        setAuthUserId,
         authRole,
         authEmail,
         authName,
-        setAuthEmail
+        authId,
       }}
     >
       {children}

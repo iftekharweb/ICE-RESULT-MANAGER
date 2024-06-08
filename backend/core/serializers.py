@@ -34,4 +34,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = ['id', 'email', 'name', 'role']
         read_only_fields = ['id']
 
+class StudentTeacherIdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = None
+        fields = ['id']
         
