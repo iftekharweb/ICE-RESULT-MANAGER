@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { useStateContext } from "../contexts/ContextProvider";
 import { FiLogOut } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const currentColor = "#03C9D7";
 
@@ -24,6 +25,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => {
 
 const Navbar = () => {
   const { activeMenu, setActiveMenu, authName , handleLogOut} = useStateContext();
+  const navigate = useNavigate()
 
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
 

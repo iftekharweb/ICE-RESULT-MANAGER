@@ -16,14 +16,17 @@ class FormFillUpInformationSerializer(serializers.ModelSerializer):
         model = FormFillUpInformation
         fields = '__all__'
     
-    def validate(self, data):
+    def create(self, validated_data):
+        form_id = validated_data.get('form_id')
+        student = validated_data.get('student')
+        section = validated_data.get('section')
         if FormFillUpInformation.objects.filter(
-            form_id=data['form_id'],
-            student=data['student'],
-            section=data['section']
+            form_id=form_id,
+            student=student,
+            section=section
         ).exists():
             raise serializers.ValidationError({
                 'detail': "This combination of form, student, and section already exists."
             })
-        return data
+        return super().create(validated_data)
 

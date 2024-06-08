@@ -4,6 +4,9 @@ from rest_framework.serializers import ValidationError
 from .models import FormFillUp, FormFillUpInformation
 from .serializers import FormFillUpSerializer, FormFillUpInformationSerializer
 from .renderers import CustomErrorRenderer
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import action
 
 class FormFillUpViewSet(viewsets.ModelViewSet):
     queryset = FormFillUp.objects.all()
@@ -22,4 +25,8 @@ class FormFillUpInformationViewSet(viewsets.ModelViewSet):
     queryset = FormFillUpInformation.objects.all()
     serializer_class = FormFillUpInformationSerializer
     permission_classes = [IsAuthenticated]
-    renderer_classes = [CustomErrorRenderer]
+
+    # Define allowed methods explicitly
+    http_method_names = ['get', 'patch', 'post']
+
+    

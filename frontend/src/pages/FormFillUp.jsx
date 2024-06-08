@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {useNavigate} from 'react-router-dom'
 import axios from "axios";
 import { IoMdAdd } from "react-icons/io";
 import { IoNotificationsOff } from "react-icons/io5";
@@ -19,6 +20,7 @@ const DateTimeDisplay = ({ dateTimeString }) => {
 };
 
 const FormFillUp = () => {
+  const navigate = useNavigate();
   const { authToken, authRole } = useStateContext();
   const [notices, setNotices] = useState([]);
   const [cnt, setCnt] = useState(0);
@@ -63,6 +65,17 @@ const FormFillUp = () => {
   };
 
   useEffect(() => {
+    console.log(authToken);
+    if(authToken === "") {
+      navigate("/");
+    }
+  },[authToken])
+
+  useEffect(() => {
+    console.log(authRole);
+    if(authToken === "") {
+      navigate("/");
+    }
     fetchForms();
     notices.map((x) => !x.is_expired && setCnt(cnt + 1));
   }, []);
