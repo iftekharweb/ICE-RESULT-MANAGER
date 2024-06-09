@@ -32,7 +32,6 @@ const Students = () => {
       const response = await axios.get(`${import.meta.env.VITE_BASEURL}/students`);
       setStudents(response.data);
     } catch (error) {
-      setStudents(x);
       console.error(error);
     }
   };

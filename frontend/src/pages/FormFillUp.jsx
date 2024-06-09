@@ -72,7 +72,7 @@ const FormFillUp = () => {
 
   useEffect(() => {
     fetchForms();
-    notices.map((x) => !x.is_expired && setCnt(cnt + 1));
+    notices.map((x) => x.is_expired === false && setCnt(cnt + 1));
   }, []);
 
   return (
