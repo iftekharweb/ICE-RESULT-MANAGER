@@ -1,5 +1,6 @@
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
+from rest_framework.exceptions import NotFound
 from rest_framework.generics import RetrieveAPIView
 from . import serializers, renderers
 from rest_framework.response import Response
@@ -77,11 +78,19 @@ class StudentTeacherIdView(RetrieveAPIView):
 
     def get_object(self):
         user_id = self.kwargs.get('user_id')
-        teacher = get_object_or_404(Teacher, user_id=user_id)
-        if teacher:
+        
+        try:
+            teacher = Teacher.objects.get(user_id=user_id)
             self.serializer_class.Meta.model = Teacher
             return teacher
-        student = get_object_or_404(Student, user_id=user_id)
-        if student:
+        except Teacher.DoesNotExist:
+            pass
+
+        try:
+            student = Student.objects.get(user_id=user_id)
             self.serializer_class.Meta.model = Student
             return student
+        except Student.DoesNotExist:
+            pass 
+
+        raise NotFound(detail="User with given ID is neither a Teacher nor a Student.")
