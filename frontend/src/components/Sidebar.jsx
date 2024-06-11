@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { MdSpaceDashboard, MdOutlineCancel } from "react-icons/md";
 import { FaBookOpenReader } from "react-icons/fa6";
-import { IoPersonAdd } from "react-icons/io5";
+import { IoSettingsSharp } from "react-icons/io5";
 import { ImProfile } from "react-icons/im";
 import { IoMdContacts } from "react-icons/io";
 import { PiStudentBold } from "react-icons/pi";
@@ -52,9 +52,9 @@ const links = [
         icon: <SiGoogleforms />,
       },
       {
-        name: "pre-process",
-        role: ["System Admin"],
-        icon: <IoPersonAdd />,
+        name: "marking",
+        role: ["Teacher"],
+        icon: <IoSettingsSharp />,
       },
     ],
   },

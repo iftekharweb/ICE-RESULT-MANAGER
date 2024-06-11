@@ -35,6 +35,13 @@ class FormFillUpInformation(models.Model):
     is_formed = models.BooleanField(default=False, blank=True)
     is_added = models.BooleanField(default=False, blank=True)
 
+    final_marks = models.IntegerField(default=0.0, null=True, blank=True)
+    ct_marks = models.IntegerField(default=0.0, null=True, blank=True)
+    attend_marks = models.IntegerField(default=0.0, null=True, blank=True)
+
+    is_marks_added = models.BooleanField(default=False, blank=True)
+    is_result = models.BooleanField(default=False, blank=True)
+
     class Meta:
         unique_together = ('form_id', 'student', 'section')
 
