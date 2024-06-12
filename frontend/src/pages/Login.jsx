@@ -7,7 +7,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 
 const Login = () => {
 
-  const {setAuthToken} = useStateContext();
+  const {setAuthToken, setAuthUserId} = useStateContext();
 
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -52,6 +52,7 @@ const Login = () => {
       if (!data.errors) {
         localStorage.setItem("token", data.token.access);
         setAuthToken(data.token.access);
+        setAuthUserId(data.user_id);
         navigate("/");
       }
     } catch (error) {

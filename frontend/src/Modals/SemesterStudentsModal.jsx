@@ -63,9 +63,9 @@ const SemesterStudentsModal = ({
     setInfoId(x);
   }
 
-  const handleAddStudent = async () => {
+  const handleAddStudent = async (x) => {
     try {
-      const res = await axios.patch(`${import.meta.env.VITE_BASEURL}/form-fill-up-information/${infoId}/`,{
+      const res = await axios.patch(`${import.meta.env.VITE_BASEURL}/form-fill-up-information/${x}/`,{
         is_allowed: true
       }, {
         headers: {
@@ -74,6 +74,7 @@ const SemesterStudentsModal = ({
       });
       if(res.data) {
         fetchStudents();
+        changeInfo(null);
       }
     } catch (error) {
       console.error(error);
@@ -123,7 +124,7 @@ const SemesterStudentsModal = ({
                           {student.is_allowed === false && (
                             <button className="border rounded-md border-[#03C9D7] hover:bg-[#03C9D7] px-2 py-1" onClick={() => {
                               changeInfo(student.id);
-                              handleAddStudent();
+                              handleAddStudent(student.id);
                             }}>
                               Click to add
                             </button>

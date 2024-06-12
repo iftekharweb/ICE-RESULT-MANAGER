@@ -78,6 +78,7 @@ export const ContextProvider = ({ children }) => {
         setActiveMenu,
         authToken,
         setAuthToken,
+        setAuthUserId,
         handleLogOut,
         authUserId,
         authRole,

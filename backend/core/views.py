@@ -53,7 +53,8 @@ class UserLogInView(APIView):
                 return Response(
                     {
                         'token': token,
-                        'msg':'LogIn Successful !'
+                        'msg':'LogIn Successful !',
+                        'user_id': user.id,
                     }, 
                     status=status.HTTP_200_OK
                 )

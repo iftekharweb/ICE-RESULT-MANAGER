@@ -81,7 +81,7 @@ const AllowStudentModal = ({ handleAllow, semester_id, form_id }) => {
               {info?.assigned_sections.map(
                 (section) =>
                   section?.course?.semester?.id === semester_id && (
-                    <article className="rounded-lg border border-gray-100 bg-white p-4 shadow-sm transition hover:shadow-lg sm:p-6">
+                    <article className="rounded-lg border border-gray-100 bg-white p-4 shadow-sm transition hover:shadow-lg sm:p-6 mb-3">
                       <div className="flex justify-start items-center">
                         <span className="inline-block rounded bg-[#03C9D7] p-2 text-white">
                           <svg
