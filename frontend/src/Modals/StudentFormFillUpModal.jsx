@@ -139,9 +139,9 @@ const StudentFormFillUpModal = ({ handleFill, semester_id, form_id }) => {
         studentInfo.map((info) => {
           if (info.section === section && info.student === student_id) {
             makeFormed(info.id);
+            fetchForms();
           }
         });
-      fetchForms();
     });
   };
 

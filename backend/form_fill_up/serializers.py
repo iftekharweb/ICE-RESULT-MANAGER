@@ -6,7 +6,7 @@ class FormFillUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FormFillUp
-        fields = ['id', 'semester','title', 'start_time', 'end_time', 'description', 'is_expired']
+        fields = ['id', 'semester','title', 'start_time', 'end_time', 'description', 'is_expired', 'can_mark']
 
     def get_is_expired(self, obj):
         return obj.is_expired()

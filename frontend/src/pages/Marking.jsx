@@ -59,7 +59,7 @@ const Marking = () => {
       </div>
       <div className="py-3">
         {notices.map((notice) =>
-            notice.is_expired && (
+            notice.can_mark && (
               <article className="rounded-xl bg-white p-4 ring ring-[#03C9D7] sm:p-6 lg:p-8 mb-6" key={notice.id}>
                 <div className="flex items-start sm:gap-8">
                   <div

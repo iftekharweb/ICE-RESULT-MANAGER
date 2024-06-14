@@ -54,16 +54,15 @@ const MarkingModal = ({
         setStudents(curr);
         const initialMarks = {};
         curr.forEach((student) => {
-          initialMarks[student.id] = {
-            final_marks: "",
-            ct_marks: "",
-            attendance_marks: "",
+          initialMarks[student.student] = {
+            final_marks: (parseFloat(student.final_marks) === 0.00 ? null : parseFloat(student.final_marks)),
+            ct_marks: (parseFloat(student.ct_marks) === 0.00 ? null : parseFloat(student.ct_marks)),
+            attend_marks: (parseFloat(student.attend_marks) === 0.00 ? null : parseFloat(student.attend_marks)),
           };
         });
         setMarks(initialMarks);
       }
     } catch (error) {
-      //setStudents([{ student: 1910377143, is_marks_added: false }]);
       console.error(error);
     }
   };
@@ -83,12 +82,19 @@ const MarkingModal = ({
   };
 
   const handleAddStudent = async (studentId) => {
-    //console.log({...marks[studentId]});
+    //console.log({ ...marks[studentId] });
+    const theStudent = students.filter((student) => {
+      return student.student === studentId;
+    });
+    
+    const X = { ...marks[studentId] };
+    if(X.final_marks === null || X.attend_marks === null || X.ct_marks === null) {
+      console.log("All fields required");
+      return;
+    }
     try {
       const res = await axios.patch(
-        `${
-          import.meta.env.VITE_BASEURL
-        }/form-fill-up-information/${studentId}/`,
+        `${import.meta.env.VITE_BASEURL}/form-fill-up-information/${theStudent[0].id}/`,
         {
           is_marks_added: true,
           ...marks[studentId],
@@ -148,24 +154,24 @@ const MarkingModal = ({
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {currentStudents.map((student) => (
-                    <tr key={student.id}>
+                    <tr key={student.student}>
                       <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
                         {student.student}
                       </td>
                       <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
                         <label
-                          htmlFor={`final-${student.id}`}
+                          htmlFor={`final-${student.student}`}
                           className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-[#03C9D7] focus-within:ring-1 focus-within:ring-[#03C9D7]"
                         >
                           <input
-                            type="text"
-                            id={`final-${student.id}`}
-                            className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 py-2 px-2"
+                            type="number"
+                            id={`final-${student.student}`}
+                            className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 py-2"
                             placeholder="Final Exam Marks"
-                            value={marks[student.id]?.final_marks || ""}
+                            value={marks[student.student]?.final_marks || ""}
                             onChange={(e) =>
                               handleMarksChange(
-                                student.id,
+                                student.student,
                                 "final_marks",
                                 e.target.value
                               )
@@ -179,18 +185,18 @@ const MarkingModal = ({
                       </td>
                       <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
                         <label
-                          htmlFor={`ct-${student.id}`}
+                          htmlFor={`ct-${student.student}`}
                           className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-[#03C9D7] focus-within:ring-1 focus-within:ring-[#03C9D7]"
                         >
                           <input
-                            type="text"
-                            id={`ct-${student.id}`}
-                            className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 py-2 px-2"
+                            type="number"
+                            id={`ct-${student.student}`}
+                            className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 py-2"
                             placeholder="Class Test Marks"
-                            value={marks[student.id]?.ct_marks || ""}
+                            value={marks[student.student]?.ct_marks || ""}
                             onChange={(e) =>
                               handleMarksChange(
-                                student.id,
+                                student.student,
                                 "ct_marks",
                                 e.target.value
                               )
@@ -204,19 +210,19 @@ const MarkingModal = ({
                       </td>
                       <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
                         <label
-                          htmlFor={`attendance-${student.id}`}
+                          htmlFor={`attendance-${student.student}`}
                           className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-[#03C9D7] focus-within:ring-1 focus-within:ring-[#03C9D7]"
                         >
                           <input
-                            type="text"
-                            id={`attendance-${student.id}`}
-                            className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 py-2 px-2"
+                            type="number"
+                            id={`attendance-${student.student}`}
+                            className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 py-2"
                             placeholder="Attendance Marks"
-                            value={marks[student.id]?.attendance_marks || ""}
+                            value={marks[student.student]?.attend_marks || ""}
                             onChange={(e) =>
                               handleMarksChange(
-                                student.id,
-                                "attendance_marks",
+                                student.student,
+                                "attend_marks",
                                 e.target.value
                               )
                             }
@@ -231,8 +237,8 @@ const MarkingModal = ({
                         <div>
                           {student.is_marks_added === false && (
                             <button
-                              className="inline-block rounded-lg bg-[#03C9D7] px-5 py-3 text-sm font-medium text-white hover:bg-red-500"
-                              onClick={() => handleAddStudent(student.id)}
+                              className="border rounded-md border-[#03C9D7] hover:bg-[#03C9D7] px-2 py-1"
+                              onClick={() => handleAddStudent(student.student)}
                             >
                               Click to add
                             </button>
