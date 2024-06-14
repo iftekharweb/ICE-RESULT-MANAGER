@@ -6,7 +6,7 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { ImProfile } from "react-icons/im";
 import { IoMdContacts } from "react-icons/io";
 import { PiStudentBold } from "react-icons/pi";
-import { FaChalkboardTeacher } from "react-icons/fa";
+import { FaChalkboardTeacher, FaLandmark  } from "react-icons/fa";
 import { SiGoogleforms } from "react-icons/si";
 
 import { useStateContext } from "../contexts/ContextProvider";
@@ -56,6 +56,11 @@ const links = [
         role: ["Teacher"],
         icon: <IoSettingsSharp />,
       },
+      {
+        name: "result",
+        role: ["System Admin","Teacher", "Student"],
+        icon: <FaLandmark />,
+      },
     ],
   },
 ];
@@ -66,10 +71,6 @@ const Sidebar = () => {
   //const navigate = useNavigate();
   const { authRole, activeMenu, setActiveMenu, handleLogOut } =
     useStateContext();
-
-  useEffect(() => {
-    console.log(authRole);
-  }, []);
 
   const handleCloseSideBar = () => {
     if (activeMenu !== undefined) {
