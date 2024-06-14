@@ -29,4 +29,21 @@ class FormFillUpInformationSerializer(serializers.ModelSerializer):
                 'detail': "This combination of form, student, and section already exists."
             })
         return super().create(validated_data)
+    
+
+class CourseResultSerializer(serializers.ModelSerializer):
+    course_code = serializers.CharField(source='section.course.code')
+    course_title = serializers.CharField(source='section.course.title')
+    final_marks = serializers.DecimalField(max_digits=10, decimal_places=2)
+    ct_marks = serializers.DecimalField(max_digits=10, decimal_places=2)
+    attend_marks = serializers.DecimalField(max_digits=10, decimal_places=2)
+    total_marks = serializers.SerializerMethodField()
+
+    class Meta:
+        model = FormFillUpInformation
+        fields = ['course_code', 'course_title', 'final_marks', 'ct_marks', 'attend_marks', 'total_marks']
+
+    def get_total_marks(self, obj):
+        return obj.final_marks + obj.ct_marks + obj.attend_marks
+
 
