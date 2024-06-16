@@ -4,8 +4,13 @@ import { IoMdAdd } from "react-icons/io";
 import {SearchIt} from '../components'
 import CreateUserModal from "../Modals/CreateUserModal";
 
+import { useStateContext } from "../contexts/ContextProvider";
+
 
 const Students = () => {
+
+  const {authRole} = useStateContext();
+
   const [students, setStudents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const studentsPerPage = 12;
@@ -52,12 +57,12 @@ const Students = () => {
         { !adding && <div className="mr-1"><SearchIt/></div>}
           <div>
 
-            <button className="flex justify-center items-center rounded bg-[#03C9D7] px-5 py-1 text-md font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-[#03C9D7]" onClick={handleAdd}>
+            { authRole === "System Admin" && <button className="flex justify-center items-center rounded bg-[#03C9D7] px-5 py-1 text-md font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-[#03C9D7]" onClick={handleAdd}>
               <span className="font-bold pr-2">
                 <IoMdAdd />
               </span>
               Add Student
-            </button>
+            </button>}
           </div>
         </div>
       </div>
@@ -132,7 +137,7 @@ const Students = () => {
                   onClick={() => handlePageChange(index + 1)}
                   className={`block rounded border ${
                     currentPage === index + 1
-                      ? "block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white"
+                      ? "block size-8 rounded border-[#03C9D7] bg-[#03C9D7] text-center leading-8 text-white"
                       : "block size-8 rounded border border-gray-100 bg-white text-center leading-8 text-gray-900"
                   } text-center leading-8`}
                 >

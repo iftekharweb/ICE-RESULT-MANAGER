@@ -89,7 +89,7 @@ const Login = () => {
               <div className="relative">
                 <input
                   type="email"
-                  className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+                  className="w-full rounded-lg border border-gray-200 p-4 pe-12 text-sm shadow-sm"
                   placeholder="Enter email"
                   value={email}
                   onChange={(e) => setEmail(() => e.target.value)}
@@ -122,7 +122,7 @@ const Login = () => {
               <div className="relative">
                 <input
                   type="password"
-                  className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+                  className="w-full rounded-lg border border-gray-200 p-4 pe-12 text-sm shadow-sm"
                   placeholder="Enter password"
                   value={password}
                   onChange={(e) => setPassword(() => e.target.value)}
