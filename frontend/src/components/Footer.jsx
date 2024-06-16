@@ -1,47 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
+import TermsAndConditionsModal from "../Modals/TermsAndConditionsModal";
+import PrivacyPolicyModal from "../Modals/PrivacyPolicyModal";
 
 const Footer = () => {
+
+  const [terming, setTerming] = useState(false);
+  const handleTerm = () => {
+    setTerming(!terming);
+  }
+
+  const [policying, setPolicying] = useState(false);
+  const handlePolicy = () => {
+    setPolicying(!policying);
+  }
+
   return (
     <div className="w-full">
+      {
+        terming && <TermsAndConditionsModal handleTerm={handleTerm}/>
+      }
+      {
+        policying && <PrivacyPolicyModal handlePolicy={handlePolicy}/>
+      }
       <footer className="bg-[#FAFBFB]">
         <div className="mx-auto max-w-screen-xl px-4 pb-8 pt-0 sm:px-6 lg:px-8 lg:pt-0">
           <div className="mt-2 border-t border-gray-100 pt-2 sm:flex sm:items-center sm:justify-between lg:mt-0">
             <ul className="flex flex-wrap justify-center gap-4 text-xs lg:justify-end">
               <li>
-                <a
-                  href="#"
+                <button
+                  onClick={handleTerm}
                   className="text-gray-500 transition hover:opacity-75"
                 >
                   {" "}
                   Terms & Conditions{" "}
-                </a>
+                </button>
               </li>
 
               <li>
-                <a
-                  href="#"
+                <button
+                  onClick={handlePolicy}
                   className="text-gray-500 transition hover:opacity-75"
                 >
                   {" "}
                   Privacy Policy{" "}
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-500 transition hover:opacity-75"
-                >
-                  {" "}
-                  Cookies{" "}
-                </a>
+                </button>
               </li>
             </ul>
 
             <ul className="mt-8 flex justify-center gap-6 sm:mt-0 lg:justify-end">
               <li>
                 <a
-                  href="#"
+                  href="https://web.facebook.com/iftikharmohammedshishir/"
                   rel="noreferrer"
                   target="_blank"
                   className="text-gray-700 transition hover:text-[#03C9D7]"
@@ -65,7 +74,7 @@ const Footer = () => {
 
               <li>
                 <a
-                  href="#"
+                  href="https://www.instagram.com/iftekhar_md._shishir/"
                   rel="noreferrer"
                   target="_blank"
                   className="text-gray-700 transition hover:text-[#03C9D7]"
@@ -89,7 +98,7 @@ const Footer = () => {
 
               <li>
                 <a
-                  href="#"
+                  href="https://x.com/iftekharweb"
                   rel="noreferrer"
                   target="_blank"
                   className="text-gray-700 transition hover:text-[#03C9D7]"
@@ -109,7 +118,7 @@ const Footer = () => {
 
               <li>
                 <a
-                  href="#"
+                  href="https://github.com/iftekharweb/ICE-RESULT-MANAGER/"
                   rel="noreferrer"
                   target="_blank"
                   className="text-gray-700 transition hover:text-[#03C9D7]"
