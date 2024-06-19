@@ -47,7 +47,9 @@ const Courses = () => {
 
   return (
     <div className="m-2 md:m-8 mt-24 p-2 md:px-10 md:py-5 bg-white rounded-3xl h-[90%]">
-      {adding && <CreateCourseModal handleAdd={handleAdd} fetchCourses={fetchCourses}/>}
+      {adding && (
+        <CreateCourseModal handleAdd={handleAdd} fetchCourses={fetchCourses} />
+      )}
       <div className="flex flex-row justify-between">
         {/* Header */}
         <div className="pb-3">
@@ -99,6 +101,9 @@ const Courses = () => {
                 <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
                   Semester
                 </th>
+                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+                  Sections
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -121,6 +126,18 @@ const Courses = () => {
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
                     {course.semester.name}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
+                    <ul>
+                      {course.sections.map((x) => (
+                        <li className="py-1">
+                          <span className="font-semibold px-1">
+                            {x.section}:{" "}
+                          </span>
+                          {x.teacher.user.name}
+                        </li>
+                      ))}
+                    </ul>
                   </td>
                 </tr>
               ))}
