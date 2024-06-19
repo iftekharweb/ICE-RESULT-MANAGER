@@ -7,7 +7,7 @@ import { ImProfile } from "react-icons/im";
 import { IoMdContacts } from "react-icons/io";
 import { PiStudentBold } from "react-icons/pi";
 import { FaChalkboardTeacher, FaLandmark  } from "react-icons/fa";
-import { SiGoogleforms } from "react-icons/si";
+import { SiGoogleforms,SiCoursera } from "react-icons/si";
 
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -45,6 +45,11 @@ const links = [
         name: "teachers",
         role: ["System Admin", "Student", "Teacher"],
         icon: <FaChalkboardTeacher />,
+      },
+      {
+        name: "courses",
+        role: ["System Admin", "Student", "Teacher"],
+        icon: <SiCoursera />,
       },
       {
         name: "form-fill-up",

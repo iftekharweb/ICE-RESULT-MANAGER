@@ -3,9 +3,14 @@ import { useNavigate } from "react-router-dom";
 import LOGIN_COVER from "../assets/Shabash_Bangladesh.jpg";
 import axios from "axios";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { useStateContext } from "../contexts/ContextProvider";
 
 const Login = () => {
+
+  const notify_e = (msg) => toast.error(msg);
 
   const {setAuthToken, setAuthUserId} = useStateContext();
 
@@ -56,7 +61,7 @@ const Login = () => {
         navigate("/");
       }
     } catch (error) {
-      console.log(error.message);
+      notify_e("Either email or password is invalid!");
     }
   };
 
@@ -93,6 +98,7 @@ const Login = () => {
                   placeholder="Enter email"
                   value={email}
                   onChange={(e) => setEmail(() => e.target.value)}
+                  required
                 />
 
                 <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
@@ -126,6 +132,7 @@ const Login = () => {
                   placeholder="Enter password"
                   value={password}
                   onChange={(e) => setPassword(() => e.target.value)}
+                  required
                 />
 
                 <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
@@ -172,6 +179,7 @@ const Login = () => {
           />
         </div>
       </section>
+      <ToastContainer/>
     </div>
   );
 };

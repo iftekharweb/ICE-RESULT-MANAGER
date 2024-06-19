@@ -1,3 +1,4 @@
+# views.py
 from rest_framework.viewsets import ModelViewSet
 from .models import Course, Section
 from .serializers import CourseSerializer, SectionSerializer

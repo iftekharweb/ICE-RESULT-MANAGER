@@ -80,6 +80,7 @@ const CourseViewModal = ({ handleShow }) => {
           </div>
         </div>
         <div>
+          
           <div className="rounded-lg border border-gray-200">
             <div className="overflow-x-auto rounded-t-lg">
               <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
@@ -137,7 +138,6 @@ const CourseViewModal = ({ handleShow }) => {
                 </tbody>
               </table>
             </div>
-
             <div className="rounded-b-lg border-t border-gray-200 px-4 py-2">
               <ol className="flex justify-end gap-1 text-xs font-medium">
                 <li>
