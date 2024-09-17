@@ -1,30 +1,51 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { IoMdAdd } from "react-icons/io";
 import SearchIt from './searchIt';
 import CreateUserModal from "./createUserModal";
 import * as actions from "@/actions";
-
 import { useStateContext } from "@/contexts";
 import { toast } from "react-toastify";
 
 
 const Students = () => {
-
-  const {authRole} = useStateContext();
-
+  const { authRole } = useStateContext();
   const [students, setStudents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
   const studentsPerPage = 12;
-
   const [adding, setAdding] = useState(false);
+
   const handleAdd = () => {
     setAdding(!adding);
-  }
+  };
 
-  const totalPages = Math.ceil(students.length / studentsPerPage);
-  const currentStudents = students.slice(
+  const fetchStudents = async () => {
+    const res = await actions.fetch_students();
+    if (!res.error) {
+      setStudents(res.students);
+    } else {
+      toast.error(res.msg);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudents();
+  }, []);
+
+  const filteredStudents = students.filter((student) => {
+    const { id, session, user: { name, email } } = student;
+
+    return (
+      id.toString().toLowerCase().includes(searchQuery.toLowerCase()) || 
+      name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      session.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      email.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
+
+  const totalPages = Math.ceil(filteredStudents.length / studentsPerPage);
+  const currentStudents = filteredStudents.slice(
     (currentPage - 1) * studentsPerPage,
     currentPage * studentsPerPage
   );
@@ -35,34 +56,30 @@ const Students = () => {
     }
   };
 
-  const fetchStudents = async () => {
-    const res = await actions.fetch_students();
-    if(!res.error) {
-        setStudents(res.students);
-    } else {
-        toast.error(res.msg);
-    }
-  };
-
-  useEffect(() => {
-    fetchStudents();
-  }, []);
-
   return (
     <div className="m-2 md:m-8 mt-24 p-2 md:px-10 md:py-5 bg-white rounded-3xl">
-      {adding && <CreateUserModal handleAdd={handleAdd} fetchStudents={fetchStudents}/>}
+      {adding && <CreateUserModal handleAdd={handleAdd} fetchStudents={fetchStudents} />}
+      
       <div className="flex flex-row justify-between">
         {/* Header */}
         <div className="pb-3">
           <p className="text-3xl font-semibold">All Students</p>
         </div>
-        <div className=" flex justify-center items-center pb-3">
-        { !adding && <div className="mr-1"><SearchIt/></div>}
+        <div className="flex justify-center items-center pb-3">
+          {!adding && (
+            <div className="mr-1">
+              <SearchIt searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+            </div>
+          )}
           <div>
-
-            { authRole === "System Admin" && <button className="flex justify-center items-center rounded bg-sky-500 px-5 py-2 text-md font-medium text-white hover:bg-sky-600 focus:outline-none focus:ring active:bg-sky-500" onClick={handleAdd}>
-              Add Student
-            </button>}
+            {authRole === "System Admin" && (
+              <button
+                className="flex justify-center items-center rounded bg-sky-500 px-5 py-2 text-md font-medium text-white hover:bg-sky-600 focus:outline-none focus:ring active:bg-sky-500"
+                onClick={handleAdd}
+              >
+                Add Student
+              </button>
+            )}
           </div>
         </div>
       </div>

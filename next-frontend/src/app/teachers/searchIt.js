@@ -1,12 +1,11 @@
 import React from "react";
 
-const SearchIt = () => {
+const SearchIt = ({ searchQuery, setSearchQuery }) => {
   return (
     <div>
       <div className="relative">
         <label htmlFor="Search" className="sr-only px-1">
-          {" "}
-          Search{" "}
+          Search
         </label>
 
         <input
@@ -14,6 +13,8 @@ const SearchIt = () => {
           id="Search"
           placeholder="Search for..."
           className="w-full rounded-md border border-gray-200 py-2 px-1 pe-10 shadow-sm sm:text-sm"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
 
         <span className="absolute inset-y-0 end-0 grid w-10 place-content-center">

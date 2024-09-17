@@ -12,6 +12,7 @@ const Courses = () => {
 
   const [courses, setCourses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
   const coursesPerPage = 12;
 
   const [adding, setAdding] = useState(false);
@@ -19,8 +20,15 @@ const Courses = () => {
     setAdding(!adding);
   };
 
-  const totalPages = Math.ceil(courses.length / coursesPerPage);
-  const currentCourses = courses.slice(
+  const filteredCourses = courses.filter(course =>
+    course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    course.code.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+    course.semester.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    course.type.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
+  const currentCourses = filteredCourses.slice(
     (currentPage - 1) * coursesPerPage,
     currentPage * coursesPerPage
   );
@@ -52,12 +60,12 @@ const Courses = () => {
       <div className="flex flex-row justify-between">
         {/* Header */}
         <div className="pb-3">
-          <p className="text-3xl font-semibold">All courses</p>
+          <p className="text-3xl font-semibold">All Courses</p>
         </div>
-        <div className=" flex justify-center items-center pb-3">
+        <div className="flex justify-center items-center pb-3">
           {!adding && (
             <div className="mr-1">
-              <SearchIt />
+              <SearchIt searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             </div>
           )}
           <div>
@@ -66,7 +74,7 @@ const Courses = () => {
                 className="flex justify-center items-center rounded bg-sky-500 px-5 py-2 text-md font-medium text-white hover:bg-sky-600 focus:outline-none focus:ring active:bg-sky-500"
                 onClick={handleAdd}
               >
-                Add course
+                Add Course
               </button>
             )}
           </div>
@@ -126,7 +134,7 @@ const Courses = () => {
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
                     <ul>
                       {course.sections.map((x) => (
-                        <li className="py-1">
+                        <li className="py-1" key={x.section}>
                           <span className="font-semibold px-1">
                             {x.section}:{" "}
                           </span>

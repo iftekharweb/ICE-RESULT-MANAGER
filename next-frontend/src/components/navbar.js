@@ -24,7 +24,10 @@ const Navbar = () => {
           <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
             <button
               className="block text-teal-600"
-              onClick={() => actions.To_home_page()}
+              onClick={() => {
+                setUserMenu(false);
+                actions.To_home_page();
+              }}
             >
               <span className="sr-only">Home</span>
               <Image src={BookGIF} width={40} height={50} />
@@ -76,7 +79,10 @@ const Navbar = () => {
                   <li>
                     <button
                       className="text-gray-500 transition hover:text-gray-500/75"
-                      onClick={() => actions.To_courses_page()}
+                      onClick={() => {
+                        setUserMenu(false);
+                        actions.To_courses_page();
+                      }}
                     >
                       {" "}
                       Courses{" "}
@@ -86,7 +92,10 @@ const Navbar = () => {
                   <li>
                     <button
                       className="text-gray-500 transition hover:text-gray-500/75"
-                      onClick={() => actions.To_form_fillup_page()}
+                      onClick={() => {
+                        setUserMenu(false);
+                        actions.To_form_fillup_page();
+                      }}
                     >
                       {" "}
                       FormFillup{" "}
@@ -97,7 +106,10 @@ const Navbar = () => {
                     <li>
                       <button
                         className="text-gray-500 transition hover:text-gray-500/75"
-                        onClick={() => actions.To_marking_page()}
+                        onClick={() => {
+                          setUserMenu(false);
+                          actions.To_marking_page();
+                        }}
                       >
                         {" "}
                         Marking{" "}
@@ -108,7 +120,10 @@ const Navbar = () => {
                   <li>
                     <button
                       className="text-gray-500 transition hover:text-gray-500/75"
-                      onClick={() => actions.To_result_page()}
+                      onClick={() => {
+                        setUserMenu(false);
+                        actions.To_result_page();
+                      }}
                     >
                       {" "}
                       Result{" "}
@@ -133,7 +148,10 @@ const Navbar = () => {
                 <div className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg">
                   <button
                     className="hover:bg-sky-500 text-gray-400 hover:text-white  px-2 rounded-md"
-                    onClick={() => actions.To_profile_page()}
+                    onClick={() => {
+                      setUserMenu(false);
+                      actions.To_profile_page();
+                    }}
                   >
                     <span className="text-14">Hi,</span>{" "}
                     <span className="font-bold ml-1 text-14">{authName}</span>

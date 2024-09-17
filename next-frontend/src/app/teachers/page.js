@@ -4,14 +4,15 @@ import { useEffect, useState } from "react";
 import SearchIt from "./searchIt";
 import CreateUserModal from "./createUserModal";
 import * as actions from "@/actions";
-
 import { useStateContext } from "@/contexts";
+import { toast } from "react-toastify";
 
 const Teachers = () => {
-  const {authRole} = useStateContext();
+  const { authRole } = useStateContext();
 
   const [teachers, setTeachers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState(""); // Add state for search query
   const teachersPerPage = 12;
 
   const [adding, setAdding] = useState(false);
@@ -19,8 +20,34 @@ const Teachers = () => {
     setAdding(!adding);
   };
 
-  const totalPages = Math.ceil(teachers.length / teachersPerPage);
-  const currentTeachers = teachers.slice(
+  // Fetch teachers data
+  const fetchTeachers = async () => {
+    const res = await actions.fetch_teachers();
+    if (!res.error) {
+      setTeachers(res.teachers);
+    } else {
+      toast.error(res.msg);
+    }
+  };
+
+  useEffect(() => {
+    fetchTeachers();
+  }, []);
+
+  // Filter teachers based on search query
+  const filteredTeachers = teachers.filter((teacher) => {
+    const { id, rank, user: { name, email } } = teacher;
+
+    return (
+      id.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+      name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      rank.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      email.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
+
+  const totalPages = Math.ceil(filteredTeachers.length / teachersPerPage);
+  const currentTeachers = filteredTeachers.slice(
     (currentPage - 1) * teachersPerPage,
     currentPage * teachersPerPage
   );
@@ -31,37 +58,29 @@ const Teachers = () => {
     }
   };
 
-  const fetchTeachers = async () => {
-    const res = await actions.fetch_teachers();
-    if(!res.error) {
-        setTeachers(res.teachers);
-    } else {
-        toast.error(res.msg);
-    }
-  };
-
-  useEffect(() => {
-    fetchTeachers();
-  }, []);
-
   return (
     <div className="m-2 md:m-8 mt-24 p-2 md:px-10 md:py-5 bg-white rounded-3xl">
-      {adding && <CreateUserModal handleAdd={handleAdd} fetchTeachers={fetchTeachers}/>}
+      {adding && <CreateUserModal handleAdd={handleAdd} fetchTeachers={fetchTeachers} />}
       <div className="flex flex-row justify-between">
         {/* Header */}
         <div className="pb-3">
           <p className="text-3xl font-semibold">All Teachers</p>
         </div>
-        <div className=" flex justify-center items-center pb-3">
+        <div className="flex justify-center items-center pb-3">
           {!adding && (
             <div className="mr-1">
-              <SearchIt />
+              <SearchIt searchQuery={searchQuery} setSearchQuery={setSearchQuery} /> {/* Pass state and setter */}
             </div>
           )}
           <div>
-            {authRole === "System Admin" && <button className="flex justify-center items-center rounded bg-sky-500 px-5 py-2 text-md font-medium text-white hover:bg-sky-600 focus:outline-none focus:ring active:bg-sky-500" onClick={handleAdd}>
-              Add Teacher
-            </button>}
+            {authRole === "System Admin" && (
+              <button
+                className="flex justify-center items-center rounded bg-sky-500 px-5 py-2 text-md font-medium text-white hover:bg-sky-600 focus:outline-none focus:ring active:bg-sky-500"
+                onClick={handleAdd}
+              >
+                Add Teacher
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -79,7 +98,7 @@ const Teachers = () => {
                   Name
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                  rank
+                  Rank
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
                   Email
