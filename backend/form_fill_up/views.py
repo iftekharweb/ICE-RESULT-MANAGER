@@ -17,7 +17,6 @@ class FormFillUpViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def perform_destroy(self, instance):
-        """Override destroy to delete only if expired."""
         if instance.is_expired():
             instance.delete()
         else:
