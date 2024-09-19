@@ -3,13 +3,14 @@ import Image from 'next/image'
 
 const Loading = () => {
   return (
-    <div className='h-full w-full flex justify-center items-center'>
+    <div className='h-[90vh] w-full flex justify-center items-center'>
+      <div className="m-2">
       <Image
       src={LoadingSVG}
-      width={400}
-      height={300}
+      width={200}
+      height={100}
       />
-      <h1>loading..</h1>
+      </div>
     </div>
   )
 }
