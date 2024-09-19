@@ -81,7 +81,7 @@ const StudentFormFillUpModal = ({ handleFill, semester_id, form_id }) => {
           (info) =>
             info.student === student_id &&
             info.form_id === form_id &&
-            course.sections.includes(info.section)
+            course.sections.some((section) => section.id === info.section)
         );
         const allSectionsOk =
           sections.length > 0 && sections.every((info) => info.is_allowed);
@@ -115,7 +115,7 @@ const StudentFormFillUpModal = ({ handleFill, semester_id, form_id }) => {
     sections.forEach((section) => {
       !ok &&
         studentInfo.map((info) => {
-          if (info.section === section && info.student === student_id) {
+          if (info.section === section.id && info.student === student_id) {
             makeFormed(info.id);
             fetchForms();
           }
