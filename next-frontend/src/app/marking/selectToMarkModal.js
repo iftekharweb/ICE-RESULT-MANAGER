@@ -26,7 +26,7 @@ const SelectToMarkModal = ({ handleSelection, semester_id, form_id }) => {
   };
   useEffect(() => {
     getTeacher_id();
-  }, []);
+  }, [authUserId]);
 
   const teacherData = async () => {
     const res = await actions.fetch_teacher_info(teacher_id);
