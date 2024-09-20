@@ -19,28 +19,26 @@ const AllowStudentModal = ({ handleAllow, semester_id, form_id }) => {
   const [teacher_id, setTeacher_id] = useState(null);
   const [info, setInfo] = useState(undefined);
 
-  const getTeacher_id = async () => {
-    const res = await actions.get_teacher_id(authUserId);
-    if (!res.error) {
-      setTeacher_id(res.teacher_id);
-    } else {
-      toast.error(res.msg);
-    }
-  };
   useEffect(() => {
-    getTeacher_id();
-  }, []);
+    (async () => {
+      const res = await actions.get_teacher_id(authUserId);
+      if (!res.error) {
+        setTeacher_id(res.teacher_id);
+      } else {
+        toast.error(res.msg);
+      }
+    })();
+  }, [authUserId]);
 
-  const teacherData = async () => {
-    const res = await actions.fetch_teacher_info(teacher_id);
-    if (!res.error) {
-      setInfo(res.info);
-    } else {
-      toast.error(res.msg);
-    }
-  };
   useEffect(() => {
-    teacherData();
+    (async () => {
+      const res = await actions.fetch_teacher_info(teacher_id);
+      if (!res.error) {
+        setInfo(res.info);
+      } else {
+        toast.error(res.msg);
+      }
+    })();
   }, [teacher_id]);
 
   const [section_id, setSection_id] = useState(null);
@@ -70,7 +68,10 @@ const AllowStudentModal = ({ handleAllow, semester_id, form_id }) => {
               {info?.assigned_sections.map(
                 (section) =>
                   section?.course?.semester?.id === semester_id && (
-                    <article className="rounded-lg border border-gray-100 bg-white p-4 shadow-sm transition hover:shadow-lg sm:p-6 mb-3">
+                    <article
+                      className="rounded-lg border border-gray-100 bg-white p-4 shadow-sm transition hover:shadow-lg sm:p-6 mb-3"
+                      key={section?.course?.semester?.id}
+                    >
                       <div className="flex justify-start items-center">
                         <span className="inline-block rounded bg-sky-500 p-2 text-white">
                           <svg

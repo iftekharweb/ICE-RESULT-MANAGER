@@ -105,7 +105,7 @@ const MarkingModal = ({
         <div>
           <div className="flex justify-between items-center pb-3">
             <div className="py-2">
-              <p className="text-2xl font-semibold">Add Student's Marks </p>
+              <p className="text-2xl font-semibold">Add Student Marks </p>
             </div>
             <div className="py-2">
               <button onClick={handleSelection}>

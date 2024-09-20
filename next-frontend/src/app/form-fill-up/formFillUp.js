@@ -14,22 +14,22 @@ import StudentFormFillUpModal from "./studentFormFillUpModal";
 import { toast } from "react-toastify";
 
 const DateTimeDisplay = ({ dateTimeString }) => {
-    const dateObj = new Date(dateTimeString);
-    const date = dateObj.toLocaleDateString(undefined, {
-      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    });
-  
-    const time = dateObj.toLocaleTimeString(undefined, {
-      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    });
-  
-    return (
-      <span>
-        {date} {time}
-      </span>
-    );
-  };
-  
+  const dateObj = new Date(dateTimeString);
+  const date = dateObj.toLocaleDateString(undefined, {
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  });
+
+  const time = dateObj.toLocaleTimeString(undefined, {
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  });
+
+  return (
+    <span>
+      {date} {time}
+    </span>
+  );
+};
+
 const FormFillUp = () => {
   const { authToken, authRole } = useStateContext();
   const [notices, setNotices] = useState([]);
@@ -53,7 +53,7 @@ const FormFillUp = () => {
   const [filling, setFilling] = useState(false);
   const handleFill = () => {
     setFilling(!filling);
-  }
+  };
 
   const [semester_id, setSemester_id] = useState(null);
   const [form_id, setForm_id] = useState(null);
@@ -63,26 +63,26 @@ const FormFillUp = () => {
     setForm_id(y);
   };
 
-  const fetchForms = async () => {
-    const res = await actions.fetch_forms(authToken);
-    if(!res.error) {
-        setNotices(res.forms);
-    } else {
-        toast.error(res.msg);
-    }
-  };
-
   useEffect(() => {
-    fetchForms();
+    (async () => {
+      const res = await actions.fetch_forms(authToken);
+      if (!res.error) {
+        setNotices(res.forms);
+      } else {
+        toast.error(res.msg);
+      }
+    })();
   }, []);
 
   useEffect(() => {
     notices.forEach((x) => x.is_expired === false && setCnt(cnt + 1));
-  },[notices])
+  }, [notices]);
 
   return (
     <div className="m-2 md:m-8 mt-24 p-2 md:px-10 md:py-5 bg-white rounded-3xl h-[90%]">
-      {adding && <CreateNoticeModal handleAdd={handleAdd} fetchForms={fetchForms}/>}
+      {adding && (
+        <CreateNoticeModal handleAdd={handleAdd} fetchForms={fetchForms} />
+      )}
       {processing && (
         <ProcessStudentModal
           handleProcess={handleProcess}
@@ -97,9 +97,13 @@ const FormFillUp = () => {
           form_id={form_id}
         />
       )}
-      {
-        filling && <StudentFormFillUpModal handleFill={handleFill} semester_id={semester_id} form_id={form_id}/>
-      }
+      {filling && (
+        <StudentFormFillUpModal
+          handleFill={handleFill}
+          semester_id={semester_id}
+          form_id={form_id}
+        />
+      )}
       <div className="flex justify-between items-center">
         <div>
           <p className="text-3xl font-semibold">All Notices</p>
@@ -160,10 +164,13 @@ const FormFillUp = () => {
                         {authRole === "Student" &&
                           new Date() >= new Date(notice.start_time) &&
                           new Date() <= new Date(notice.end_time) && (
-                            <button className="rounded border border-sky-500 hover:bg-sky-500 px-3 py-1.5 text-[10px] font-medium hover:text-white mr-2" onClick={() => {
-                              handleFill();
-                              handleChange(notice.semester, notice.id);
-                            }}>
+                            <button
+                              className="rounded border border-sky-500 hover:bg-sky-500 px-3 py-1.5 text-[10px] font-medium hover:text-white mr-2"
+                              onClick={() => {
+                                handleFill();
+                                handleChange(notice.semester, notice.id);
+                              }}
+                            >
                               Form Fill Up
                             </button>
                           )}
