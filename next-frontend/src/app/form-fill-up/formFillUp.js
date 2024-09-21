@@ -63,15 +63,17 @@ const FormFillUp = () => {
     setForm_id(y);
   };
 
+  const fetchForms = async () => {
+    const res = await actions.fetch_forms(authToken);
+    if (!res.error) {
+      setNotices(res.forms);
+    } else {
+      toast.error(res.msg);
+    }
+  };
+  
   useEffect(() => {
-    (async () => {
-      const res = await actions.fetch_forms(authToken);
-      if (!res.error) {
-        setNotices(res.forms);
-      } else {
-        toast.error(res.msg);
-      }
-    })();
+    fetchForms();
   }, []);
 
   useEffect(() => {
