@@ -89,7 +89,8 @@ DATABASES = {
 }
 
 import dj_database_url
-DATABASES['default'] = dj_database_url.parse(os.environ.get('DB_URL'))
+if DEBUG == True:
+    DATABASES['default'] = dj_database_url.parse(os.environ.get('DB_URL'))
 
 AUTH_PASSWORD_VALIDATORS = [
     {
