@@ -11,12 +11,16 @@ const Navbar = () => {
   const { authEmail, authName, authToken, handleLogOut, authRole } =
     useStateContext();
   const [userMenu, setUserMenu] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false); // Track mobile menu state
+
   const handleLogoutClick = () => {
     handleLogOut();
   };
+
   useEffect(() => {
     if (!authEmail) actions.To_login_page();
   }, [authEmail]);
+
   return (
     <>
       {authEmail && (
@@ -34,6 +38,7 @@ const Navbar = () => {
             </button>
 
             <div className="flex flex-1 items-center justify-end md:justify-between">
+              {/* Desktop Nav */}
               <nav aria-label="Global" className="hidden md:block">
                 <ul className="flex items-center gap-6 text-sm">
                   <li className="relative">
@@ -130,11 +135,11 @@ const Navbar = () => {
                     </button>
                   </li>
 
-                  {authRole === "Admin" && (
+                  {authRole === "System Admin" && (
                     <li>
                       <a
                         className="text-gray-500 transition hover:text-gray-500/75"
-                        href="http://127.0.0.1:8000/admin/"
+                        href={`${process.env.NEXT_PUBLIC_BASEURL}/admin/`}
                       >
                         {" "}
                         Admin{" "}
@@ -144,6 +149,7 @@ const Navbar = () => {
                 </ul>
               </nav>
 
+              {/* Mobile Toggle Button */}
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg">
                   <button
@@ -161,7 +167,11 @@ const Navbar = () => {
                   </button>
                 </div>
 
-                <button className="block rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden">
+                {/* Toggle Button */}
+                <button
+                  className="block rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden"
+                  onClick={() => setIsNavOpen(!isNavOpen)} // Toggle mobile menu
+                >
                   <span className="sr-only">Toggle menu</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -179,6 +189,104 @@ const Navbar = () => {
                   </svg>
                 </button>
               </div>
+
+              {/* Mobile Dropdown Modal */}
+              {isNavOpen && (
+                <div className="absolute top-16 right-4 z-20 w-64 bg-white border border-gray-200 shadow-lg rounded-md">
+                  <ul className="space-y-1 p-2">
+                    <li>
+                      <details className="group [&_summary::-webkit-details-marker]:hidden">
+                        <summary
+                          className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                        >
+                          <span className="text-sm font-medium"> Users </span>
+                          <span className="shrink-0 transition duration-300 group-open:-rotate-180">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="size-5"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </span>
+                        </summary>
+
+                        <ul className="mt-2 space-y-1 px-4">
+                          <li>
+                            <button
+                              className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                              onClick={() => {
+                                actions.To_students_page();
+                                setIsNavOpen(false);
+                              }}
+                            >
+                              Students
+                            </button>
+                          </li>
+
+                          <li>
+                            <button
+                              className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                              onClick={() => {
+                                actions.To_teachers_page();
+                                setIsNavOpen(false);
+                              }}
+                            >
+                              Teachers
+                            </button>
+                          </li>
+                        </ul>
+                      </details>
+                    </li>
+                    <li>
+                      <button
+                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                        onClick={() => {
+                          actions.To_courses_page();
+                          setIsNavOpen(false)
+                        }}
+                      >
+                        Courses
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                        onClick={() => {
+                          actions.To_result_page();
+                          setIsNavOpen(false)
+                        }}
+                      >
+                        Results
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                        onClick={() => {
+                          actions.To_form_fillup_page();
+                          setIsNavOpen(false)
+                        }}
+                      >
+                        Form fill up
+                      </button>
+                    </li>
+                    { authRole === "System Admin" && <li>
+                      <a
+                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                        href={`${process.env.NEXT_PUBLIC_BASEURL}/admin/`}
+                      >
+                        Admin
+                      </a>
+                    </li>}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </header>

@@ -15,7 +15,7 @@ export default function Home() {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (!authToken || !authUserEmail) {
+      if (!authToken) {
         actions.To_login_page();
       } else {
         setLoading(false);
