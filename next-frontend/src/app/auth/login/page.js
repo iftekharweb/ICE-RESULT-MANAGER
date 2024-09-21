@@ -21,7 +21,6 @@ const Login = () => {
     e.preventDefault();
     const postData = { email, password };
     const res = await actions.handle_login(postData);
-    console.log(res);
     if(!res.error) {
         localStorage.setItem("token", res.token);
         setAuthToken(res.token);

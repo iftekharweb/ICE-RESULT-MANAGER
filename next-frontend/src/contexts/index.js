@@ -28,7 +28,6 @@ export const ContextProvider = ({ children }) => {
 
   const fetchUser = async () => {
     const res = await actions.fetch_user_profile_data(authToken);
-    console.log(res);
     if (!res.error) {
       setAuthEmail(res.email);
       setAuthName(res.name);
