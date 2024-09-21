@@ -59,6 +59,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://localhost:5174',
     'http://localhost:3000',
+    'https://ice-result-manager.onrender.com',
 ]
 
 ROOT_URLCONF = 'app.urls'
