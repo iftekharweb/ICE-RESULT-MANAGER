@@ -20,6 +20,7 @@ const CreateUserModal = ({ handleAdd, fetchStudents }) => {
     e.preventDefault();
     const postData = { name, email, role, password };
     const res = await actions.create_user(postData);
+    console.log(res);
     if (!res.error) {
       setUser(res.userData.user_id);
       setAddStudent(!addStudent);
