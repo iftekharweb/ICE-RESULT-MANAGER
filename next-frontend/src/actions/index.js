@@ -85,6 +85,7 @@ export const handle_login = async (postData) => {
     response = {
       error: true,
       msg: "Either email or password is invalid!",
+      theError: error
     };
   }
   return response;
