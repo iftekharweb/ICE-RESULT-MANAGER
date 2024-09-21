@@ -1,20 +1,17 @@
 
 from pathlib import Path
 from datetime import timedelta
-
+import os
+from dotenv import load_dotenv
 from django.conf import settings
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
-SECRET_KEY = 'django-insecure-=9v6m=(-sfxhykvr4*7+jfxi6a3s1$&#4xyt6k0b9(c(ghh+1g'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = ['*']
 
@@ -84,10 +81,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -95,9 +88,8 @@ DATABASES = {
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
+import dj_database_url
+DATABASES['default'] = dj_database_url.parse(os.environ.get('DB_URL'))
 
 AUTH_PASSWORD_VALIDATORS = [
     {
