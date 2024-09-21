@@ -117,11 +117,9 @@ const CreateStudentModal = ({ handleAdd, user, fetchStudents }) => {
               >
                 <option value={null}>Assigned Hall</option>
                 {allHalls.map((hall) => (
-                  <>
                     <option value={hall.id} key={hall.id}>
                       {hall.name}
                     </option>
-                  </>
                 ))}
               </select>
 
