@@ -184,7 +184,7 @@ export const create_user = async (postData) => {
       return { error: false, userData: res.data };
     }
   } catch (error) {
-    return { error: true, msg: "Something is wrong" };
+    return { error: true, msg: "Something is wrong", theError: error };
   }
 };
 
