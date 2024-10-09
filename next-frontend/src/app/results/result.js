@@ -15,6 +15,7 @@ const Result = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [minGPA, setMinGPA] = useState(""); // New state for minimum GPA filter
+  const [Credits, SetCredits] = useState(0);
   const resultsPerPage = 15;
 
   // Filtered results based on minimum GPA, if provided
@@ -82,19 +83,28 @@ const Result = () => {
     }
   };
 
+  useEffect(() => {
+    if(results) {
+      let C = 0;
+      results.fo
+      results.results.map((x) => C += x.total_credits);
+      SetCredits(C);
+    }
+  },[results])
+
   return (
     <div className="m-2 p-2 md:px-10 bg-white rounded-3xl h-[90%]">
       <div className="flex justify-between items-center w-full py-1">
-        <div className="w-[45%]">
+        <div className="w-auto">
           <p className="font-semibold text-3xl">Results of Students</p>
         </div>
-        <div className="w-[55%]">
+        <div className="w-auto">
           <form
             action="submit"
             onSubmit={handleSubmit}
             className="flex justify-end items-center w-full "
           >
-            <div className="w-[40%] mx-2">
+            <div className="w-auto mx-2">
               <label
                 htmlFor="Student ID"
                 className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-sky-500 focus-within:ring-1 focus-within:ring-sky-500"
@@ -113,7 +123,7 @@ const Result = () => {
               </label>
             </div>
 
-            <div className="w-[40%] mx-2">
+            <div className="w-auto mx-2">
               <select
                 name="semester"
                 id="semester"
@@ -131,7 +141,7 @@ const Result = () => {
               </select>
             </div>
 
-            <div className="w-[40%] mx-2">
+            <div className="w-auto mx-2">
               <select
                 name="semester"
                 id="semester"
@@ -148,7 +158,7 @@ const Result = () => {
               </select>
             </div>
 
-            <div className="w-[20%]">
+            <div className="w-auto mx-1">
               <input
                 type="number"
                 placeholder="Min GPA"
@@ -172,11 +182,15 @@ const Result = () => {
       {(results?.GPA || results?.CGPA) && (
         <div className="w-full flex justify-center items-center py-5 font-semibold text-lg">
           {semester != 0 ? (
-            <p>
-              {gpa_text} {results.GPA}
-            </p>
+            <div>
+              <p>{gpa_text} {results.GPA}</p>
+              <p>total_credits : {Credits}</p>
+            </div>
           ) : (
-            <p>CGPA : {results.CGPA}</p>
+            <div>
+              <p>CGPA : {results.CGPA}</p>
+              <p>total_credits : {Credits}</p>
+            </div>
           )}
         </div>
       )}
