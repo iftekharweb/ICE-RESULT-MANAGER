@@ -1,39 +1,75 @@
 from django.contrib import admin
 from .models import FormFillUp, FormFillUpInformation
 
+# Customize FormFillUp Admin
 @admin.register(FormFillUp)
 class FormFillUpAdmin(admin.ModelAdmin):
-    list_display = ('semester', 'start_time', 'end_time', 'is_expired', 'can_mark')
+    # Displaying fields in the list view
+    list_display = ('semester', 'title', 'start_time', 'end_time', 'is_expired')
+    
+    # Fields to search by
+    search_fields = ('semester__name', 'title')
+    
+    # Filtering options
     list_filter = ('semester', 'start_time', 'end_time')
-    search_fields = ('semester__name',)
-    ordering = ('start_time',)
+    
+    # Read-only fields for time-related fields to avoid accidental changes
+    #readonly_fields = ('start_time', 'end_time')
+    
+    # Customize form layout and display logic
+    fieldsets = (
+        (None, {
+            'fields': ('semester', 'title', 'description')
+        }),
+        ('Time Information', {
+            'fields': ('start_time', 'end_time'),
+        }),
+    )
 
-    def is_expired(self, obj):
-        return obj.is_expired()
-    is_expired.boolean = True
-    is_expired.short_description = 'Expired'
+    # Adding actions to delete expired records
+    actions = ['delete_expired_forms']
 
-    def can_mark(self, obj):
-        return obj.can_mark()
-    can_mark.boolean = True
-    can_mark.short_description = 'Can Teachers Mark'
+    # Action method to delete expired forms
+    def delete_expired_forms(self, request, queryset):
+        for form in queryset:
+            form.delete_if_expired()
+        self.message_user(request, "Expired forms have been deleted successfully.")
+    delete_expired_forms.short_description = "Delete expired forms"
 
 @admin.register(FormFillUpInformation)
 class FormFillUpInformationAdmin(admin.ModelAdmin):
-    list_display = ('form_id', 'student', 'section', 'is_allowed', 'is_formed', 'is_added','is_marks_added')
-    list_filter = ('is_allowed', 'is_formed', 'is_added', 'form_id', 'section')
-    search_fields = ('student__name', 'section__name', 'form_id__semester__name')
+    # Displaying fields in the list view
+    list_display = ('form_id', 'student', 'section', 'is_allowed', 'is_formed', 'is_added', 'final_marks', 'is_marks_added', 'is_result')
+    
+    # Fields to search by
+    search_fields = ('form_id__title', 'student__name', 'section__name')
+    
+    # Filtering options
+    list_filter = ('is_allowed', 'is_formed', 'is_added', 'is_marks_added', 'is_result')
+    
+    # Inline editing of boolean fields
+    list_editable = ('is_allowed', 'is_formed', 'is_added', 'is_marks_added', 'is_result')
 
+    # Customize form layout for better organization
     fieldsets = (
         (None, {
             'fields': ('form_id', 'student', 'section')
         }),
-        ('Status', {
+        ('Permissions', {
             'fields': ('is_allowed', 'is_formed', 'is_added'),
         }),
+        ('Marks', {
+            'fields': ('final_marks', 'ct_marks', 'attend_marks', 'is_marks_added'),
+        }),
+        ('Result', {
+            'fields': ('is_result',),
+        }),
     )
-
-    readonly_fields = ('is_allowed', 'is_formed', 'is_added')
-    autocomplete_fields = ['student', 'section', 'form_id']
-
-
+    
+    # Enforcing unique constraint on form_id, student, and section combination
+    def save_model(self, request, obj, form, change):
+        if not change:  # Only enforce on new records
+            if FormFillUpInformation.objects.filter(form_id=obj.form_id, student=obj.student, section=obj.section).exists():
+                self.message_user(request, "This FormFillUpInformation entry already exists.")
+                return
+        super().save_model(request, obj, form, change)
