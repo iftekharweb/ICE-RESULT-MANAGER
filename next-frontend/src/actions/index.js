@@ -553,3 +553,16 @@ export const get_student_result = async(id, semester) => {
     return {error: true, msg: error.response.data.message}
   }
 }
+
+export const get_student_year_result = async(id, year) => {
+  try {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASEURL}/year-results/?studentId=${id}&yearId=${year}`
+    );
+    if (res.data) {
+      return {error: false, result: res.data};
+    }
+  } catch (error) {
+    return {error: true, msg: error.response.data.message}
+  }
+}

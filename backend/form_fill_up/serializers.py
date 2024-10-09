@@ -46,4 +46,48 @@ class CourseResultSerializer(serializers.ModelSerializer):
     def get_total_marks(self, obj):
         return obj.final_marks + obj.ct_marks + obj.attend_marks
 
+class YearResultSerializer(serializers.ModelSerializer):
+    course_code = serializers.CharField(source='section.course.code')
+    course_title = serializers.CharField(source='section.course.title')
+    final_marks = serializers.DecimalField(max_digits=10, decimal_places=2)
+    ct_marks = serializers.DecimalField(max_digits=10, decimal_places=2)
+    attend_marks = serializers.DecimalField(max_digits=10, decimal_places=2)
+    total_marks = serializers.SerializerMethodField()
+    gpa_points = serializers.SerializerMethodField()
+
+    class Meta:
+        model = FormFillUpInformation
+        fields = ['course_code', 'course_title', 'final_marks', 'ct_marks', 'attend_marks', 'total_marks', 'gpa_points']
+
+    def get_total_marks(self, obj):
+        return obj.final_marks + obj.ct_marks + obj.attend_marks
+
+    def get_gpa_points(self, obj):
+        total_marks = float(self.get_total_marks(obj))
+        total_credits = float(obj.section.course.credit)
+        percentage = (total_marks / (total_credits * 25)) * 100
+
+        # GPA calculation based on percentage
+        if percentage >= 80:
+            return 4.0  # A+
+        elif percentage >= 75:
+            return 3.75  # A
+        elif percentage >= 70:
+            return 3.5  # A-
+        elif percentage >= 65:
+            return 3.25  # B+
+        elif percentage >= 60:
+            return 3.0  # B
+        elif percentage >= 55:
+            return 2.75  # B-
+        elif percentage >= 50:
+            return 2.5  # C+
+        elif percentage >= 45:
+            return 2.25  # C
+        elif percentage >= 40:
+            return 2.0  # D
+        else:
+            return 0.0  # F or Incomplete
+
+
 

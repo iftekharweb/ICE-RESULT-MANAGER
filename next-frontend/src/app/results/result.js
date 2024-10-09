@@ -1,20 +1,29 @@
 "use client";
 
-import { useState, useEffect, act } from "react";
+import { useState, useEffect } from "react";
 import * as actions from "@/actions";
+import { toast } from "react-toastify";
 
 const Result = () => {
   const [allSemesters, setAllSemesters] = useState([]);
   const [semester, setSemester] = useState(null);
+  const [year, setYear] = useState(null);
   const [id, setId] = useState(null);
   const [results, setResults] = useState({ results: [] });
   const [msg, setMsg] = useState("");
+  const [gpa_text, setGpa_text] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [minGPA, setMinGPA] = useState(""); // New state for minimum GPA filter
   const resultsPerPage = 15;
 
-  const totalPages = Math.ceil(results?.results.length / resultsPerPage);
-  const currentResults = results?.results.slice(
+  // Filtered results based on minimum GPA, if provided
+  const filteredResults = minGPA
+    ? results?.results.filter((result) => result.gpa_points >= parseFloat(minGPA))
+    : results?.results;
+
+  const totalPages = Math.ceil(filteredResults.length / resultsPerPage);
+  const currentResults = filteredResults.slice(
     (currentPage - 1) * resultsPerPage,
     currentPage * resultsPerPage
   );
@@ -39,13 +48,37 @@ const Result = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await actions.get_student_result(id, semester);
-    if(!res.error) {
-      setResults(res.result);
-      setMsg("");
+
+    const isNumeric = (value) => /^[0-9]+$/.test(value);
+
+    if ((year && !isNumeric(year)) || (semester && !isNumeric(semester))) {
+      setMsg("Year and Semester must be valid numbers.");
+      setSemester(null);
+      setYear(null);
+      return;
+    }
+
+    setMsg("");
+    setResults({ results: [] });
+
+    if (year && !semester) {
+      const res = await actions.get_student_year_result(id, year);
+      setGpa_text("Year GPA : ");
+      if (!res.error) {
+        setResults(res.result);
+      } else {
+        setMsg(res.msg || "Error fetching year results.");
+      }
+    } else if (semester) {
+      const res = await actions.get_student_result(id, semester);
+      setGpa_text("Semester GPA : ");
+      if (!res.error) {
+        setResults(res.result);
+      } else {
+        setMsg(res.msg || "Error fetching semester results.");
+      }
     } else {
-      setMsg(res.msg);
-      setResults({ results: [] });
+      setMsg("Please select either a semester or a year.");
     }
   };
 
@@ -74,12 +107,12 @@ const Result = () => {
                   value={id}
                   onChange={(e) => setId(e.target.value)}
                 />
-
                 <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
                   Student ID
                 </span>
               </label>
             </div>
+
             <div className="w-[40%] mx-2">
               <select
                 name="semester"
@@ -97,6 +130,34 @@ const Result = () => {
                 ))}
               </select>
             </div>
+
+            <div className="w-[40%] mx-2">
+              <select
+                name="semester"
+                id="semester"
+                className=" w-full rounded-lg border border-gray-200 text-gray-700 sm:text-sm focus-within:border-sky-500 focus-within:ring-1 focus-within:ring-sky-500 py-3 px-2 outline-none"
+                value={semester}
+                onChange={(e) => setYear(e.target.value)}
+              >
+                <option value={null}>Select Year</option>
+                <option value={0}>All Year</option>
+                <option value={1}> First Year </option>
+                <option value={2}> Second Year </option>
+                <option value={3}> Third Year </option>
+                <option value={4}> Fourth Year </option>
+              </select>
+            </div>
+
+            <div className="w-[20%]">
+              <input
+                type="number"
+                placeholder="Min GPA"
+                className="border rounded p-2 w-full"
+                value={minGPA}
+                onChange={(e) => setMinGPA(e.target.value)}
+              />
+            </div>
+
             <div className="w-[20%]">
               <button
                 className="flex justify-center items-center rounded bg-sky-500 px-5 py-3 text-md font-medium text-white hover:bg-sky-600 focus:outline-none focus:ring active:bg-sky-500"
@@ -111,7 +172,9 @@ const Result = () => {
       {(results?.GPA || results?.CGPA) && (
         <div className="w-full flex justify-center items-center py-5 font-semibold text-lg">
           {semester != 0 ? (
-            <p>Semester GPA : {results.GPA}</p>
+            <p>
+              {gpa_text} {results.GPA}
+            </p>
           ) : (
             <p>CGPA : {results.CGPA}</p>
           )}
@@ -124,7 +187,7 @@ const Result = () => {
             <p>
               {msg
                 ? msg
-                : "Fill the fields with student id and semster to get results."}
+                : "Fill the fields with student id and semester to get results."}
             </p>
           </div>
         )}
