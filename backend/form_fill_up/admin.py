@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import FormFillUp, FormFillUpInformation
 
-# Customize FormFillUp Admin
 @admin.register(FormFillUp)
 class FormFillUpAdmin(admin.ModelAdmin):
     # Displaying fields in the list view
@@ -12,11 +11,6 @@ class FormFillUpAdmin(admin.ModelAdmin):
     
     # Filtering options
     list_filter = ('semester', 'start_time', 'end_time')
-    
-    # Read-only fields for time-related fields to avoid accidental changes
-    #readonly_fields = ('start_time', 'end_time')
-    
-    # Customize form layout and display logic
     fieldsets = (
         (None, {
             'fields': ('semester', 'title', 'description')
