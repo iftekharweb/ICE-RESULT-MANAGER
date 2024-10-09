@@ -62,7 +62,7 @@ const Result = () => {
     setMsg("");
     setResults({ results: [] });
 
-    if (year && !semester) {
+    if (year) {
       const res = await actions.get_student_year_result(id, year);
       setGpa_text("Year GPA : ");
       if (!res.error) {
@@ -141,22 +141,16 @@ const Result = () => {
               </select>
             </div>
 
-            <div className="w-auto mx-2">
-              <select
-                name="semester"
-                id="semester"
-                className=" w-full rounded-lg border border-gray-200 text-gray-700 sm:text-sm focus-within:border-sky-500 focus-within:ring-1 focus-within:ring-sky-500 py-3 px-2 outline-none"
-                value={semester}
+            <div className="w-auto mx-1">
+              <input
+                type="number"
+                placeholder="Enter year"
+                className="border rounded p-2 w-full"
+                value={year}
                 onChange={(e) => setYear(e.target.value)}
-              >
-                <option value={null}>Select Year</option>
-                <option value={0}>All Year</option>
-                <option value={1}> First Year </option>
-                <option value={2}> Second Year </option>
-                <option value={3}> Third Year </option>
-                <option value={4}> Fourth Year </option>
-              </select>
+              />
             </div>
+            
 
             <div className="w-auto mx-1">
               <input
